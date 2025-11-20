@@ -1,186 +1,82 @@
 @import "tailwindcss";
+/* We will get fonts from next/font in layout.tsx, so the @import is no longer needed here */
 
 :root {
   --background: #FFFFFF;
-  --foreground: #2C2C2C;
+  --foreground: #1a1a1a;
   --primary: #4A90E2;
   --accent: #FF6B6B;
-  --neutral-light: #E5E5E5;
 }
 
 body {
-  background-color: var(--background) !important;
-  color: var(--foreground) !important;
-  font-family: 'Inter', sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
-/* AGGRESSIVE MINIMALIST PIXEL OVERRIDES */
-
-/* Force white background everywhere */
-html, body, div, section, main, header, footer, nav {
-  background-color: #FFFFFF !important;
-}
-
-/* Force text colors */
-* {
-  color: #2C2C2C !important;
-}
-
-/* Clean glassmorphism */
+/* Light glassmorphism for white theme */
 .glassmorphism {
-  background: rgba(255, 255, 255, 0.8) !important;
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(229, 229, 229, 0.6) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
-/* Primary colors - Soft Blue (#4A90E2) */
-.text-primary,
-.bg-primary,
-.border-primary {
-  color: #4A90E2 !important;
-  background-color: #4A90E2 !important;
-  border-color: #4A90E2 !important;
-}
-
-/* Accent colors - Coral (#FF6B6B) */
-.text-accent,
-.bg-accent,
-.border-accent {
-  color: #FF6B6B !important;
-  background-color: #FF6B6B !important;
-  border-color: #FF6B6B !important;
-}
-
-/* Neutral colors */
-.text-muted { color: #666666 !important; }
-.text-neutral { color: #9E9E9E !important; }
-.text-neutral-dark { color: #616161 !important; }
-.bg-neutral-light { background-color: #E5E5E5 !important; }
-
-/* Gradients - Primary to Accent */
-.from-primary {
-  --tw-gradient-from: #4A90E2 !important;
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(74, 144, 226, 0)) !important;
-}
-
-.to-accent {
-  --tw-gradient-to: #FF6B6B !important;
-}
-
-.bg-gradient-to-r {
-  background-image: linear-gradient(to right, #4A90E2, #FF6B6B) !important;
-}
-
-/* Background overrides */
-.bg-background,
-.bg-background {
-  background-color: #FFFFFF !important;
-}
-
-/* Button styling */
-button,
-.pixel-button,
-.btn {
-  background-color: #4A90E2 !important;
-  color: white !important;
-  border: none !important;
-  border-radius: 8px !important;
-  transition: all 0.3s ease !important;
-  padding: 12px 24px !important;
-}
-
-button:hover,
-.pixel-button:hover,
-.btn:hover {
-  background-color: #357ABD !important;
-  transform: translateY(-1px) !important;
-  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3) !important;
-}
-
-/* Card hover effects */
-.card-hover,
-.hover\:scale-105:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
-}
-
-/* Pixel-inspired elements */
+/* Pixel-inspired utility classes */
 .pixel-border {
-  border: 2px solid #E5E5E5 !important;
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1) !important;
+  border: 2px solid var(--primary);
+  border-radius: 8px;
 }
 
 .pixel-button {
-  transition: all 0.2s ease !important;
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1) !important;
+  background: var(--primary);
+  color: white;
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
 }
 
 .pixel-button:hover {
-  transform: translateY(-1px) !important;
-  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15) !important;
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
 }
 
-.pixel-button:active {
-  transform: translateY(0) !important;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1) !important;
+.card-hover {
+  transition: all 0.3s ease;
 }
 
-/* Animation classes */
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
 .fade-in {
-  animation: fadeIn 0.3s ease-in-out !important;
+  animation: fadeIn 0.6s ease-out;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Border overrides */
-.border-neutral-light { border-color: #E5E5E5 !important; }
-.border-primary { border-color: rgba(74, 144, 226, 0.3) !important; }
-.border-accent { border-color: rgba(255, 107, 107, 0.3) !important; }
-
-/* Shadow overrides */
-.shadow-card { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important; }
-.shadow-card-hover { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important; }
-
-/* Clean scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #F5F5F5;
+  background: #f5f5f5;
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #4A90E2, #FF6B6B) !important;
+  background: var(--primary);
   border-radius: 4px;
 }
-
-/* Override Tailwind classes that might interfere */
-.text-foreground { color: #2C2C2C !important; }
-.text-gray-300 { color: #666666 !important; }
-.text-gray-400 { color: #666666 !important; }
-.text-white { color: #2C2C2C !important; }
-.text-black { color: #2C2C2C !important; }
-
-/* Force layout structure */
-.min-h-screen {
-  min-height: 100vh !important;
-}
-
-.max-w-6xl {
-  max-width: 72rem !important;
-}
-
-.mx-auto {
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-
-/* Responsive design overrides */
-@media (max-width: 768px) {
-  .text-4xl { font-size: 2.25rem !important; line-height: 2.5rem !important; }
-  .text-5xl { font-size: 3rem !important; line-height: 1 !important; }
-  .text-7xl { font-size: 4.5rem !important; line-height: 1 !important; }
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
 }
