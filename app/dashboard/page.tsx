@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { aiAgents as defaultAgents, generatePredictionFeeds, PredictionFeed, AIAgent } from '@/data/mockData';
 import { TrendingUp, Activity, DollarSign, Users, UserPlus } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // Import our new System Components
 import PageHeader from '@/components/PageHeader';
@@ -32,6 +33,7 @@ interface UserAgent {
 }
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [feeds, setFeeds] = useState<PredictionFeed[]>([]);
   const [selectedAgent, setSelectedAgent] = useState<string | null>(null);
   const [aiAgents, setAiAgents] = useState<AIAgent[]>(defaultAgents);
@@ -180,7 +182,7 @@ export default function DashboardPage() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.1 }}
-                    onClick={() => setSelectedAgent(agent.id)}
+                    onClick={() => router.push(`/agent/${agent.id}`)}
                     className="cursor-pointer group hover:scale-105 hover:border-primary border-l-4 p-4 md:p-6"
                     style={{ borderLeftColor: agent.color, borderColor: `${agent.color}40` }}
                   >
@@ -244,7 +246,7 @@ export default function DashboardPage() {
                       boxShadow: selectedAgent === agent.id ? '0 0 20px rgba(255, 0, 255, 0.5)' : 'none'
                     }}
                     transition={{ delay: index * 0.1 }}
-                    onClick={() => setSelectedAgent(agent.id)}
+                    onClick={() => router.push(`/agent/${agent.id}`)}
                     className="cursor-pointer group hover:scale-105 hover:border-magenta-400 border-l-4 p-4 md:p-6"
                     style={{ 
                       borderLeftColor: '#ff00ff', 

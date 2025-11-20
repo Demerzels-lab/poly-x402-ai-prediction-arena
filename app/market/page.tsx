@@ -4,29 +4,64 @@ import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import AppLayout from '@/components/AppLayout';
 import { generateMarkets, Market } from '@/data/mockData';
-import { Search, TrendingUp, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, TrendingUp, Filter } from 'lucide-react';
+import PredictionModal from '@/components/trading/PredictionModal';
+import PaginationControls from '@/components/market/PaginationControls';
+import SortControls from '@/components/market/SortControls';
+
+type SortBy = 'volume' | 'date' | 'confidence';
+type SortOrder = 'asc' | 'desc';
 
 export default function MarketPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [markets] = useState<Market[]>(generateMarkets());
   const [selectedMarket, setSelectedMarket] = useState<Market | null>(null);
+  const [predictionModalOpen, setPredictionModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortBy, setSortBy] = useState<SortBy>('volume');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
   const itemsPerPage = 9; // Show 9 markets per page (fits 3x3 grid nicely)
 
   const categories = ['All', 'Crypto', 'Stocks', 'Tech', 'Entertainment', 'Sports', 'Economy', 'Gaming', 'Climate', 'Politics'];
 
-  const filteredMarkets = useMemo(() => {
-    return markets.filter(market => {
+  const filteredAndSortedMarkets = useMemo(() => {
+    // First, filter markets
+    const filtered = markets.filter(market => {
       const matchesSearch = market.title.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = selectedCategory === 'All' || market.category === selectedCategory;
       return matchesSearch && matchesCategory;
     });
-  }, [markets, searchQuery, selectedCategory]);
+
+    // Then, sort markets
+    const sorted = [...filtered].sort((a, b) => {
+      let comparison = 0;
+
+      switch (sortBy) {
+        case 'volume':
+          comparison = a.volume - b.volume;
+          break;
+        case 'date':
+          // Simulate date sorting using market ID (lower ID = earlier)
+          comparison = parseInt(a.id.split('-')[1]) - parseInt(b.id.split('-')[1]);
+          break;
+        case 'confidence':
+          // Calculate average confidence for each market
+          const aConfidence = a.topAIConfidence.reduce((sum, ai) => sum + ai.confidence, 0) / a.topAIConfidence.length;
+          const bConfidence = b.topAIConfidence.reduce((sum, ai) => sum + ai.confidence, 0) / b.topAIConfidence.length;
+          comparison = aConfidence - bConfidence;
+          break;
+      }
+
+      return sortOrder === 'asc' ? comparison : -comparison;
+    });
+
+    return sorted;
+  }, [markets, searchQuery, selectedCategory, sortBy, sortOrder]);
 
   // Pagination logic
-  const totalPages = Math.ceil(filteredMarkets.length / itemsPerPage);
-  const paginatedMarkets = filteredMarkets.slice(
+  const totalPages = Math.ceil(filteredAndSortedMarkets.length / itemsPerPage);
+  const paginatedMarkets = filteredAndSortedMarkets.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -35,6 +70,19 @@ export default function MarketPage() {
     setCurrentPage(page);
     // Scroll to top of markets grid for better UX
     window.scrollTo({ top: 300, behavior: 'smooth' });
+  };
+
+  const handleSortChange = (newSortBy: SortBy) => {
+    if (sortBy === newSortBy) {
+      // Toggle order if same sort field
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      // Set new sort field with default descending order
+      setSortBy(newSortBy);
+      setSortOrder('desc');
+    }
+    // Reset to first page when sorting changes
+    setCurrentPage(1);
   };
 
   return (
@@ -50,7 +98,7 @@ export default function MarketPage() {
               LIVE PREDICTION MARKETS 2025
           </h1>
           <p className="text-gray-400 text-lg">
-            100 Prediction Markets for 2025 • {filteredMarkets.length} Markets Available • Page {currentPage} of {totalPages}
+            100 Prediction Markets for 2025 • {filteredAndSortedMarkets.length} Markets Available • Page {currentPage} of {totalPages}
           </p>
         </motion.div>
 
@@ -85,6 +133,13 @@ export default function MarketPage() {
               </button>
             ))}
           </div>
+
+          {/* Sort Controls */}
+          <SortControls 
+            sortBy={sortBy}
+            sortOrder={sortOrder}
+            onSortChange={handleSortChange}
+          />
         </div>
 
         {/* Markets Grid */}
@@ -96,7 +151,10 @@ export default function MarketPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: Math.min(index * 0.05, 1) }}
               className="glassmorphism p-6 rounded-xl border border-cyan-500/20 hover:border-cyan-500/60 transition-all group cursor-pointer"
-              onClick={() => setSelectedMarket(market)}
+              onClick={() => {
+                setSelectedMarket(market);
+                setPredictionModalOpen(true);
+              }}
             >
               {/* Category Badge */}
               <div className="flex items-center justify-between mb-4">
@@ -144,10 +202,22 @@ export default function MarketPage() {
 
               {/* Action Buttons */}
               <div className="flex space-x-2">
-                <button className="flex-1 py-2 bg-cyan-500/20 border border-cyan-500/50 text-cyan-400 text-sm font-bold rounded-lg hover:bg-cyan-500/30 transition-all">
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedMarket(market);
+                    setPredictionModalOpen(false);
+                  }}
+                  className="flex-1 py-2 bg-cyan-500/20 border border-cyan-500/50 text-cyan-400 text-sm font-bold rounded-lg hover:bg-cyan-500/30 transition-all">
                   View Details
                 </button>
-                <button className="flex-1 py-2 bg-gradient-to-r from-magenta-500 to-purple-600 text-white text-sm font-bold rounded-lg hover:scale-105 transition-all">
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedMarket(market);
+                    setPredictionModalOpen(true);
+                  }}
+                  className="flex-1 py-2 bg-gradient-to-r from-magenta-500 to-purple-600 text-white text-sm font-bold rounded-lg hover:scale-105 transition-all">
                   Predict $0.01
                 </button>
               </div>
@@ -157,41 +227,15 @@ export default function MarketPage() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-center space-x-2 mt-8">
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="px-3 py-2 bg-gray-700 text-gray-400 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-600 transition-all"
-            >
-              <ChevronLeft size={16} />
-            </button>
-            
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-              <button
-                key={page}
-                onClick={() => handlePageChange(page)}
-                className={`px-4 py-2 rounded-lg font-bold transition-all ${
-                  currentPage === page
-                    ? 'bg-gradient-to-r from-cyan-500 to-purple-500 text-white'
-                    : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
-                }`}
-              >
-                {page}
-              </button>
-            ))}
-            
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="px-3 py-2 bg-gray-700 text-gray-400 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-600 transition-all"
-            >
-              <ChevronRight size={16} />
-            </button>
-          </div>
+          <PaginationControls 
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         )}
 
         {/* Empty State */}
-        {filteredMarkets.length === 0 && (
+        {filteredAndSortedMarkets.length === 0 && (
           <div className="text-center py-20">
             <TrendingUp className="mx-auto mb-4 text-gray-600" size={64} />
             <p className="text-gray-400 text-lg">
@@ -201,7 +245,7 @@ export default function MarketPage() {
         )}
 
         {/* Market Detail Modal */}
-        {selectedMarket && (
+        {selectedMarket && !predictionModalOpen && (
           <div 
             className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
             onClick={() => setSelectedMarket(null)}
@@ -364,7 +408,11 @@ export default function MarketPage() {
 
               {/* Action Buttons */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <button className="py-4 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 glow-green">
+                <button 
+                  onClick={() => {
+                    setPredictionModalOpen(true);
+                  }}
+                  className="py-4 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 glow-green">
                   <span className="flex items-center justify-center space-x-2">
                     <span>Bet YES ($0.01)</span>
                     <span className="text-xs bg-white/20 px-2 py-1 rounded">
@@ -372,7 +420,11 @@ export default function MarketPage() {
                     </span>
                   </span>
                 </button>
-                <button className="py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 glow-red">
+                <button 
+                  onClick={() => {
+                    setPredictionModalOpen(true);
+                  }}
+                  className="py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 glow-red">
                   <span className="flex items-center justify-center space-x-2">
                     <span>Bet NO ($0.01)</span>
                     <span className="text-xs bg-white/20 px-2 py-1 rounded">
@@ -383,6 +435,18 @@ export default function MarketPage() {
               </div>
             </motion.div>
           </div>
+        )}
+
+        {/* Prediction Modal */}
+        {selectedMarket && (
+          <PredictionModal 
+            market={selectedMarket}
+            isOpen={predictionModalOpen}
+            onClose={() => {
+              setPredictionModalOpen(false);
+              setSelectedMarket(null);
+            }}
+          />
         )}
       </div>
     </AppLayout>
