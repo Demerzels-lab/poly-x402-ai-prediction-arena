@@ -106,7 +106,7 @@ export default function HomePage() {
             </Link>
           </motion.div>
         </div>
-      </section>
+      </div>
 
       {/* Features Section */}
       <section className="py-16 px-4 bg-background">
@@ -172,7 +172,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="py-8 px-4 border-t border-neutral-light bg-background">
         <div className="max-w-7xl mx-auto text-center">
-          <p className="text-sm text-neutral DEFAULT">
+          <p className="text-sm text-neutral">
             © 2025 POLYx402. Powered by x402. All rights reserved.
           </p>
         </div>
