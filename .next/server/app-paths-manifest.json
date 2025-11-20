@@ -1,5 +1,11 @@
 {
-  "/market/page": "app/market/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/analysis/page": "app/analysis/page.js",
+  "/create-agent/page": "app/create-agent/page.js",
+  "/api/analyze/route": "app/api/analyze/route.js",
   "/dashboard/page": "app/dashboard/page.js",
+  "/leaderboard/page": "app/leaderboard/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/market/page": "app/market/page.js",
   "/page": "app/page.js"
 }
