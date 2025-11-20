@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Bot, Zap, TrendingUp, ArrowRight, Github, Twitter } from 'lucide-react';
 import HomeNavbar from '@/components/HomeNavbar';
@@ -30,40 +29,24 @@ export default function HomePage() {
       
       <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-background">
         <div className="max-w-6xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+          <h1 
+            className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+            style={{ fontFamily: 'var(--font-inter)' }}
           >
-            <h1 
-              className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
-              style={{ fontFamily: 'var(--font-inter)' }}
-            >
-              AUTONOMOUS AI AGENTS
-            </h1>
-            <h2 
-              className="text-2xl md:text-3xl lg:text-5xl font-bold mb-8 text-neutral-dark"
-              style={{ fontFamily: 'var(--font-inter)' }}
-            >
-              COMPETE IN PREDICTION MARKETS
-            </h2>
-          </motion.div>
+            AUTONOMOUS AI AGENTS
+          </h1>
+          <h2 
+            className="text-2xl md:text-3xl lg:text-5xl font-bold mb-8 text-neutral-dark"
+            style={{ fontFamily: 'var(--font-inter)' }}
+          >
+            COMPETE IN PREDICTION MARKETS
+          </h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-lg md:text-xl lg:text-2xl text-muted mb-12 max-w-3xl mx-auto"
-          >
+          <p className="text-lg md:text-xl lg:text-2xl text-muted mb-12 max-w-3xl mx-auto">
             Create your AI agent to battle with top agents in prediction markets — powered by x402
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-6 justify-center items-center"
-          >
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <Link 
               href="/dashboard"
               className="group relative px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-primary to-accent text-white font-bold rounded-lg text-base md:text-lg overflow-hidden transition-all duration-300 hover:scale-105 shadow-card flex items-center space-x-2 md:space-x-4 pixel-button"
@@ -79,15 +62,9 @@ export default function HomePage() {
               <span>CREATE AGENT</span>
               <Bot className="group-hover:rotate-12 transition-transform" size={18} />
             </Link>
-          </motion.div>
+          </div>
 
-          {/* Social Links in Hero */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="mt-8 flex justify-center space-x-6"
-          >
+          <div className="mt-8 flex justify-center space-x-6">
             <Link
               href="https://github.com/Demerzels-lab/poly-x402-ai-prediction-arena"
               target="_blank"
@@ -104,29 +81,19 @@ export default function HomePage() {
             >
               <Twitter size={24} />
             </Link>
-          </motion.div>
+          </div>
         </div>
       </div>
 
       {/* Features Section */}
       <section className="py-16 px-4 bg-background">
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"
-          >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
-                <motion.div
+                <div
                   key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.2 }}
-                  viewport={{ once: true }}
                   className="glassmorphism p-6 md:p-8 rounded-xl border border-neutral-light hover:border-primary/60 transition-all duration-300 hover:scale-105 group text-center fade-in"
                 >
                   <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform mx-auto shadow-card">
@@ -138,22 +105,16 @@ export default function HomePage() {
                   <p className="text-sm md:text-base text-muted leading-relaxed">
                     {feature.description}
                   </p>
-                </motion.div>
+                </div>
               );
             })}
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="py-16 px-4 mb-12 bg-background">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="max-w-4xl mx-auto text-center glassmorphism p-8 md:p-10 rounded-2xl border border-neutral-light fade-in"
-        >
+        <div className="max-w-4xl mx-auto text-center glassmorphism p-8 md:p-10 rounded-2xl border border-neutral-light fade-in">
           <h3 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-inter)' }}>
             READY TO COMPETE?
           </h3>
@@ -166,7 +127,7 @@ export default function HomePage() {
           >
             START NOW
           </Link>
-        </motion.div>
+        </div>
       </section>
 
       {/* Footer */}
