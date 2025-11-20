@@ -5,8 +5,29 @@ import { motion } from 'framer-motion';
 import PageHeader from '@/components/PageHeader'; // <-- USE HEADER
 import Card from '@/components/Card'; // <-- USE CARD
 import { aiAgents as defaultAgents, AIAgent } from '@/data/mockData';
-import { Trophy, TrendingUp, Target, DollarSign } from 'lucide-react';
+import { Trophy, TrendingUp, Target, DollarSign, Users, UserPlus } from 'lucide-react';
 import AppLayout from '@/components/AppLayout';
+import Link from 'next/link';
+
+// UserAgent type definition
+interface UserAgent {
+  id: string;
+  name: string;
+  avatar?: string;
+  portfolio: number;
+  roi: number;
+  winRate: number;
+  totalPredictions: number;
+  profitLoss: number;
+  type: 'user';
+  personality: 'analytical' | 'risk-taker' | 'meme' | 'contrarian';
+  baseModel: 'llama' | 'mistral' | 'gemini' | 'claude';
+  capital: number;
+  createdAt: string;
+  isActive: boolean;
+  userId: string;
+  description?: string;
+}
 
 type TimeFilter = '24H' | '7D' | '30D';
 type AgentType = 'AI' | 'USER';
@@ -15,8 +36,20 @@ export default function LeaderboardPage() {
   const [timeFilter, setTimeFilter] = useState<TimeFilter>('7D');
   const [agentType, setAgentType] = useState<AgentType>('AI');
   const [aiAgents, setAiAgents] = useState<AIAgent[]>(defaultAgents);
+  const [userAgents, setUserAgents] = useState<UserAgent[]>([]);
 
-  // Dynamic ROI simulation with individual agent timers
+  // Load user agents from localStorage
+  useEffect(() => {
+    try {
+      const savedUserAgents = JSON.parse(localStorage.getItem('userAgents') || '[]');
+      setUserAgents(savedUserAgents);
+    } catch (error) {
+      console.error('Error loading user agents:', error);
+      setUserAgents([]);
+    }
+  }, []);
+
+  // Dynamic ROI simulation with individual agent timers for AI agents
   useEffect(() => {
     const intervals: NodeJS.Timeout[] = [];
     
@@ -42,7 +75,40 @@ export default function LeaderboardPage() {
     };
   }, []);
 
-  const sortedAgents = [...aiAgents].sort((a, b) => b.roi - a.roi);
+  // Dynamic ROI simulation for user agents
+  useEffect(() => {
+    if (userAgents.length === 0) return;
+
+    const intervals: NodeJS.Timeout[] = [];
+    
+    userAgents.forEach((agent, index) => {
+      const interval = 500 + Math.random() * 3000; // Slightly different timing
+      
+      const timer = setInterval(() => {
+        setUserAgents(prevAgents => 
+          prevAgents.map(a => 
+            a.id === agent.id 
+              ? { 
+                  ...a, 
+                  roi: Math.max(0, a.roi + (Math.random() - 0.5) * 1.5),
+                  winRate: Math.min(100, Math.max(0, a.winRate + (Math.random() - 0.5) * 2)),
+                  totalPredictions: a.totalPredictions + Math.floor(Math.random() * 3)
+                }
+              : a
+          )
+        );
+      }, interval);
+      
+      intervals.push(timer);
+    });
+
+    return () => {
+      intervals.forEach(clearInterval);
+    };
+  }, [userAgents.length]);
+
+  const currentAgents = agentType === 'AI' ? aiAgents : userAgents;
+  const sortedAgents = [...currentAgents].sort((a, b) => b.roi - a.roi);
 
   const getRankBadge = (rank: number) => {
     if (rank === 1) return '🥇';
@@ -140,15 +206,15 @@ export default function LeaderboardPage() {
                       {/* Agent Name */}
                       <div className="col-span-2 flex items-center space-x-2 md:space-x-3">
                         <img
-                          src={`/llm-logo/${agent.logo}`}
+                          src={`/llm-logo/${'logo' in agent ? agent.logo : 'user-default.svg'}`}
                           alt={agent.name}
-                          className={`w-10 h-10 md:w-12 md:h-12 rounded-full ${['chatgpt', 'claude', 'gemini', 'manus', 'grok', 'mistral', 'perplexity'].includes(agent.id) ? 'bg-white' : ''}`}
+                          className={`w-10 h-10 md:w-12 md:h-12 rounded-full ${'logo' in agent && ['chatgpt', 'claude', 'gemini', 'manus', 'grok', 'mistral', 'perplexity'].includes(agent.id) ? 'bg-white' : ''}`}
                           style={{ 
-                            border: `2px solid ${agent.color}`
+                            border: `2px solid ${'color' in agent ? agent.color : '#ff00ff'}`
                           }}
                         />
                         <div>
-                          <p className="font-bold text-sm md:text-base" style={{ color: agent.color }}>
+                          <p className="font-bold text-sm md:text-base" style={{ color: 'color' in agent ? agent.color : '#ff00ff' }}>
                             {agent.name}
                           </p>
                           <p className="text-xs text-gray-500">
@@ -195,17 +261,99 @@ export default function LeaderboardPage() {
                   </motion.div>
                 ))
               ) : (
-                <div className="px-4 md:px-6 py-16 md:py-20 text-center">
-                  <p className="text-gray-500 text-base md:text-lg mb-4">
-                    No User Agents registered yet
-                  </p>
-                  <a 
-                    href="/create-agent"
-                    className="inline-block px-6 md:px-8 py-3 bg-gradient-to-r from-magenta-500 to-purple-600 text-white font-bold rounded-lg text-sm md:text-base transition-all duration-300 hover:scale-105 glow-magenta"
-                  >
-                    Create Your First Agent
-                  </a>
-                </div>
+                userAgents.length > 0 ? (
+                  sortedAgents.map((agent, index) => (
+                    <motion.div
+                      key={agent.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="px-4 md:px-6 py-3 md:py-4 hover:bg-magenta-500/5 transition-all group"
+                    >
+                      <div className="grid grid-cols-7 gap-2 md:gap-4 items-center">
+                        {/* Rank */}
+                        <div className="text-xl md:text-2xl font-bold">
+                          {getRankBadge(index + 1)}
+                        </div>
+
+                        {/* Agent Name */}
+                        <div className="col-span-2 flex items-center space-x-2 md:space-x-3">
+                          <div className="relative">
+                            <img
+                              src={agent.type === 'user' 
+                                ? (agent.avatar || '/llm-logo/user-default.svg')
+                                : `/llm-logo/${(agent as AIAgent).logo}`
+                              }
+                              alt={agent.name}
+                              className="w-10 h-10 md:w-12 md:h-12 rounded-full"
+                              style={{ 
+                                border: `2px solid #ff00ff`
+                              }}
+                            />
+                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border border-black animate-pulse"></div>
+                          </div>
+                          <div>
+                            <p className="font-bold text-sm md:text-base text-magenta-400">
+                              {agent.name}
+                            </p>
+                            <p className="text-xs text-gray-500 capitalize">
+                              {agent.type === 'user' ? `${(agent as UserAgent).personality} • ${(agent as UserAgent).baseModel}` : 'System AI'}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* ROI */}
+                        <div className="text-right">
+                          <div className="flex items-center justify-end space-x-1">
+                            <TrendingUp className="text-green-400" size={16} />
+                            <span className="text-green-400 font-bold text-sm md:text-base">
+                              +{agent.roi.toFixed(1)}%
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Win Rate */}
+                        <div className="text-right">
+                          <div className="flex items-center justify-end space-x-1">
+                            <Target className="text-purple-400" size={16} />
+                            <span className="text-purple-400 font-bold text-sm md:text-base">
+                              {agent.winRate.toFixed(1)}%
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Total Predictions */}
+                        <div className="text-right text-cyan-400 font-bold text-sm md:text-base">
+                          {agent.totalPredictions}
+                        </div>
+
+                        {/* Profit/Loss */}
+                        <div className="text-right">
+                          <div className="flex items-center justify-end space-x-1">
+                            <DollarSign className="text-green-400" size={16} />
+                            <span className="text-green-400 font-bold text-sm md:text-base">
+                              +${agent.profitLoss.toLocaleString()}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))
+                ) : (
+                  <div className="px-4 md:px-6 py-16 md:py-20 text-center">
+                    <Users className="mx-auto text-magenta-400 mb-4" size={48} />
+                    <p className="text-gray-500 text-base md:text-lg mb-4">
+                      No User Agents registered yet
+                    </p>
+                    <Link 
+                      href="/create-agent"
+                      className="inline-flex items-center space-x-2 px-6 md:px-8 py-3 bg-gradient-to-r from-magenta-500 to-purple-600 text-white font-bold rounded-lg text-sm md:text-base transition-all duration-300 hover:scale-105 glow-magenta"
+                    >
+                      <UserPlus size={16} />
+                      <span>Create Your First Agent</span>
+                    </Link>
+                  </div>
+                )
               )}
             </div>
           </div>
@@ -220,11 +368,13 @@ export default function LeaderboardPage() {
             className="glassmorphism p-4 md:p-6 rounded-xl border border-cyan-500/30"
           >
             <div className="flex items-center justify-between mb-3 md:mb-4">
-              <h3 className="text-base md:text-lg font-bold text-cyan-400">Best ROI</h3>
+              <h3 className="text-base md:text-lg font-bold text-cyan-400">
+                {agentType === 'AI' ? 'Best AI ROI' : 'Best User ROI'}
+              </h3>
               <Trophy className="text-yellow-400" size={24} />
             </div>
             <p className="text-2xl md:text-3xl font-bold text-green-400">
-              +{sortedAgents[0]?.roi}%
+              +{sortedAgents[0]?.roi.toFixed(1)}%
             </p>
             <p className="text-sm text-gray-400 mt-2">
               {sortedAgents[0]?.name}
@@ -238,14 +388,16 @@ export default function LeaderboardPage() {
             className="glassmorphism p-4 md:p-6 rounded-xl border border-purple-500/30"
           >
             <div className="flex items-center justify-between mb-3 md:mb-4">
-              <h3 className="text-base md:text-lg font-bold text-purple-400">Highest Win Rate</h3>
+              <h3 className="text-base md:text-lg font-bold text-purple-400">
+                {agentType === 'AI' ? 'Highest AI Win Rate' : 'Highest User Win Rate'}
+              </h3>
               <Target className="text-purple-400" size={24} />
             </div>
             <p className="text-2xl md:text-3xl font-bold text-purple-400">
-              {Math.max(...aiAgents.map(a => a.winRate))}%
+              {currentAgents.length > 0 ? Math.max(...currentAgents.map(a => a.winRate)).toFixed(1) : '0'}%
             </p>
             <p className="text-sm text-gray-400 mt-2">
-              {aiAgents.find(a => a.winRate === Math.max(...aiAgents.map(x => x.winRate)))?.name}
+              {currentAgents.length > 0 ? currentAgents.find(a => a.winRate === Math.max(...currentAgents.map(x => x.winRate)))?.name : 'N/A'}
             </p>
           </motion.div>
 
@@ -256,14 +408,16 @@ export default function LeaderboardPage() {
             className="glassmorphism p-4 md:p-6 rounded-xl border border-magenta-500/30"
           >
             <div className="flex items-center justify-between mb-3 md:mb-4">
-              <h3 className="text-base md:text-lg font-bold text-magenta-400">Most Active</h3>
+              <h3 className="text-base md:text-lg font-bold text-magenta-400">
+                {agentType === 'AI' ? 'Most Active AI' : 'Most Active User'}
+              </h3>
               <TrendingUp className="text-magenta-400" size={24} />
             </div>
             <p className="text-2xl md:text-3xl font-bold text-magenta-400">
-              {Math.max(...aiAgents.map(a => a.totalPredictions))}
+              {currentAgents.length > 0 ? Math.max(...currentAgents.map(a => a.totalPredictions)) : '0'}
             </p>
             <p className="text-sm text-gray-400 mt-2">
-              {aiAgents.find(a => a.totalPredictions === Math.max(...aiAgents.map(x => x.totalPredictions)))?.name}
+              {currentAgents.length > 0 ? currentAgents.find(a => a.totalPredictions === Math.max(...currentAgents.map(x => x.totalPredictions)))?.name : 'N/A'}
             </p>
           </motion.div>
         </div>

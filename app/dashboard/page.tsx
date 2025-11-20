@@ -3,22 +3,68 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { aiAgents as defaultAgents, generatePredictionFeeds, PredictionFeed, AIAgent } from '@/data/mockData';
-import { TrendingUp, Activity, DollarSign } from 'lucide-react';
+import { TrendingUp, Activity, DollarSign, Users, UserPlus } from 'lucide-react';
 import Link from 'next/link';
 
 // Import our new System Components
 import PageHeader from '@/components/PageHeader';
 import Card from '@/components/Card'; // Make sure you created Card.tsx
 import AppLayout from '@/components/AppLayout';
-import { div } from 'framer-motion/client';
+
+// UserAgent type definition
+interface UserAgent {
+  id: string;
+  name: string;
+  avatar?: string;
+  portfolio: number;
+  roi: number;
+  winRate: number;
+  totalPredictions: number;
+  profitLoss: number;
+  type: 'user';
+  personality: 'analytical' | 'risk-taker' | 'meme' | 'contrarian';
+  baseModel: 'llama' | 'mistral' | 'gemini' | 'claude';
+  capital: number;
+  createdAt: string;
+  isActive: boolean;
+  userId: string;
+  description?: string;
+}
 
 export default function DashboardPage() {
   const [feeds, setFeeds] = useState<PredictionFeed[]>([]);
   const [selectedAgent, setSelectedAgent] = useState<string | null>(null);
   const [aiAgents, setAiAgents] = useState<AIAgent[]>(defaultAgents);
+  const [userAgents, setUserAgents] = useState<UserAgent[]>([]);
   const [isLoading, setIsLoading] = useState(false); // Set to false, we are using dummy data
 
-  // We removed the Supabase fetch logic
+  // Load user agents from localStorage
+  useEffect(() => {
+    try {
+      const savedUserAgents = JSON.parse(localStorage.getItem('userAgents') || '[]');
+      setUserAgents(savedUserAgents);
+    } catch (error) {
+      console.error('Error loading user agents:', error);
+      setUserAgents([]);
+    }
+  }, []);
+
+  // Check if user just created an agent and highlight it
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const newAgentId = urlParams.get('newAgent');
+      if (newAgentId) {
+        // Clear the URL parameter
+        window.history.replaceState({}, '', '/dashboard');
+        
+        // Highlight the new agent
+        setTimeout(() => {
+          setSelectedAgent(newAgentId);
+        }, 500);
+      }
+    }
+  }, []);
   
   // Dynamic ROI simulation with individual agent timers
   useEffect(() => {
@@ -100,57 +146,165 @@ export default function DashboardPage() {
         {/* 2. AI Agents Grid */}
         <section className="mb-8 md:mb-12">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 md:mb-6 gap-4">
-            <h2 className="text-xl md:text-2xl font-display font-bold text-primary">
-              ACTIVE AGENTS
-            </h2>
-            {isLoading && (
-              <div className="flex items-center space-x-2 text-sm text-muted">
-                <Activity className="animate-spin" size={16} />
-                <span>Loading agents...</span>
+            <div className="flex items-center space-x-3">
+              <Users className="text-primary" size={24} />
+              <h2 className="text-xl md:text-2xl font-display font-bold text-primary">
+                ACTIVE AGENTS
+              </h2>
+              <div className="flex space-x-2 text-xs">
+                <span className="px-2 py-1 bg-blue-500/20 text-blue-400 rounded-full">
+                  {aiAgents.length} AI
+                </span>
+                <span className="px-2 py-1 bg-magenta-500/20 text-magenta-400 rounded-full">
+                  {userAgents.length} User
+                </span>
+              </div>
+            </div>
+            <Link 
+              href="/create-agent"
+              className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-magenta-500 to-cyan-500 text-white font-bold rounded-lg text-sm hover:scale-105 transition-all"
+            >
+              <UserPlus size={16} />
+              <span>Create Agent</span>
+            </Link>
+          </div>
+
+          {/* System AI Agents Section */}
+          {aiAgents.length > 0 && (
+            <div className="mb-8">
+              <h3 className="text-lg font-bold text-blue-400 mb-4 font-display">SYSTEM AI AGENTS</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                {aiAgents.map((agent, index) => (
+                  <Card
+                    key={agent.id}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: index * 0.1 }}
+                    onClick={() => setSelectedAgent(agent.id)}
+                    className="cursor-pointer group hover:scale-105 hover:border-primary border-l-4 p-4 md:p-6"
+                    style={{ borderLeftColor: agent.color, borderColor: `${agent.color}40` }}
+                  >
+                    <div className="text-center">
+                      <img
+                        src={`/llm-logo/${agent.logo}`}
+                        alt={agent.name}
+                        className="w-12 h-12 md:w-16 md:h-16 rounded-full mx-auto mb-3 md:mb-4 bg-white"
+                        style={{ 
+                          border: `2px solid ${agent.color}`
+                        }}
+                      />
+                      <h3 className="font-display font-bold text-base md:text-lg mb-2" style={{ color: agent.color }}>
+                        {agent.name}
+                      </h3>
+                      <div className="space-y-1 text-sm md:text-base">
+                        <div className="flex justify-between">
+                          <span className="text-muted">Portfolio:</span>
+                          <span className="text-green-400 font-bold">${agent.portfolio.toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted">ROI:</span>
+                          <span className="text-primary font-bold">+{agent.roi.toFixed(1)}%</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted">Win Rate:</span>
+                          <span className="text-accent font-bold">{agent.winRate}%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* User Created Agents Section */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-magenta-400 mb-4 font-display">USER CREATED AGENTS</h3>
+              {userAgents.length === 0 && (
+                <Link 
+                  href="/create-agent"
+                  className="text-magenta-400 hover:text-magenta-300 text-sm font-bold flex items-center space-x-1"
+                >
+                  <UserPlus size={16} />
+                  <span>Create Your First Agent</span>
+                </Link>
+              )}
+            </div>
+            
+            {userAgents.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                {userAgents.map((agent, index) => (
+                  <Card
+                    key={agent.id}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ 
+                      opacity: 1, 
+                      scale: selectedAgent === agent.id ? 1.05 : 1,
+                      boxShadow: selectedAgent === agent.id ? '0 0 20px rgba(255, 0, 255, 0.5)' : 'none'
+                    }}
+                    transition={{ delay: index * 0.1 }}
+                    onClick={() => setSelectedAgent(agent.id)}
+                    className="cursor-pointer group hover:scale-105 hover:border-magenta-400 border-l-4 p-4 md:p-6"
+                    style={{ 
+                      borderLeftColor: '#ff00ff', 
+                      borderColor: `${selectedAgent === agent.id ? '#ff00ff' : '#ff00ff40'}`,
+                      animation: selectedAgent === agent.id ? 'pulse 2s infinite' : 'none'
+                    }}
+                  >
+                    <div className="text-center">
+                      <div className="relative">
+                        <img
+                          src={agent.avatar || '/llm-logo/user-default.svg'}
+                          alt={agent.name}
+                          className="w-12 h-12 md:w-16 md:h-16 rounded-full mx-auto mb-3 md:mb-4"
+                          style={{ 
+                            border: `2px solid #ff00ff`
+                          }}
+                        />
+                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-black animate-pulse"></div>
+                      </div>
+                      <h3 className="font-display font-bold text-base md:text-lg mb-2" style={{ color: '#ff00ff' }}>
+                        {agent.name}
+                        {selectedAgent === agent.id && (
+                          <span className="text-xs text-magenta-400 ml-2 animate-pulse">✨ NEW!</span>
+                        )}
+                      </h3>
+                      <div className="space-y-1 text-sm md:text-base">
+                        <div className="flex justify-between">
+                          <span className="text-muted">Portfolio:</span>
+                          <span className="text-green-400 font-bold">${agent.portfolio.toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted">ROI:</span>
+                          <span className="text-primary font-bold">+{agent.roi.toFixed(1)}%</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted">Win Rate:</span>
+                          <span className="text-accent font-bold">{agent.winRate}%</span>
+                        </div>
+                        <div className="text-xs text-muted mt-1 capitalize">
+                          {agent.personality} • {agent.baseModel}
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 glassmorphism rounded-xl border border-magenta-500/30">
+                <UserPlus className="mx-auto text-magenta-400 mb-4" size={48} />
+                <h4 className="text-lg font-bold text-magenta-400 mb-2">No User Agents Yet</h4>
+                <p className="text-gray-400 mb-4">Create your first AI agent to start competing!</p>
+                <Link 
+                  href="/create-agent"
+                  className="inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-magenta-500 to-cyan-500 text-white font-bold rounded-lg hover:scale-105 transition-all"
+                >
+                  <UserPlus size={16} />
+                  <span>Create Your First Agent</span>
+                </Link>
               </div>
             )}
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {aiAgents.map((agent, index) => (
-              // 3. Use our Reusable Card Component
-              <Card
-                key={agent.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
-                onClick={() => setSelectedAgent(agent.id)}
-                className="cursor-pointer group hover:scale-105 hover:border-primary border-l-4 p-4 md:p-6" // Added mobile padding
-                style={{ borderLeftColor: agent.color, borderColor: `${agent.color}40` }}
-              >
-                <div className="text-center">
-                  <img
-                    src={`/llm-logo/${agent.logo}`}
-                    alt={agent.name}
-                    className={`w-12 h-12 md:w-16 md:h-16 rounded-full mx-auto mb-3 md:mb-4 ${['chatgpt', 'claude', 'gemini', 'manus', 'grok', 'mistral', 'perplexity'].includes(agent.id) ? 'bg-white' : ''}`}
-                    style={{ 
-                      border: `2px solid ${agent.color}`
-                    }}
-                  />
-                  <h3 className="font-display font-bold text-base md:text-lg mb-2" style={{ color: agent.color }}>
-                    {agent.name}
-                  </h3>
-                  <div className="space-y-1 text-sm md:text-base">
-                    <div className="flex justify-between">
-                      <span className="text-muted">Portfolio:</span>
-                      <span className="text-green-400 font-bold">${agent.portfolio.toLocaleString()}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted">ROI:</span>
-                      <span className="text-primary font-bold">+{agent.roi}%</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted">Win Rate:</span>
-                      <span className="text-accent font-bold">{agent.winRate}%</span>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            ))}
           </div>
         </section>
 

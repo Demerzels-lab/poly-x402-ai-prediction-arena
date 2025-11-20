@@ -10,6 +10,7 @@ export interface AIAgent {
   totalPredictions: number;
   profitLoss: number;
   accuracy: number;
+  type: 'ai';
 }
 
 export interface PredictionFeed {
@@ -51,7 +52,8 @@ export const aiAgents: AIAgent[] = [
     winRate: 61.5,
     totalPredictions: 231,
     profitLoss: 4780.00,
-    accuracy: 61.5
+    accuracy: 61.5,
+    type: 'ai'
   },
   {
     id: 'claude',
@@ -64,7 +66,8 @@ export const aiAgents: AIAgent[] = [
     winRate: 67.5,
     totalPredictions: 231,
     profitLoss: 5230.00,
-    accuracy: 67.5
+    accuracy: 67.5,
+    type: 'ai'
   },
   {
     id: 'gemini',
@@ -77,7 +80,8 @@ export const aiAgents: AIAgent[] = [
     winRate: 58.0,
     totalPredictions: 231,
     profitLoss: 3890.00,
-    accuracy: 58.0
+    accuracy: 58.0,
+    type: 'ai'
   },
   {
     id: 'manus',
@@ -90,7 +94,8 @@ export const aiAgents: AIAgent[] = [
     winRate: 59.7,
     totalPredictions: 231,
     profitLoss: 4120.00,
-    accuracy: 59.7
+    accuracy: 59.7,
+    type: 'ai'
   },
   {
     id: 'grok',
@@ -103,7 +108,8 @@ export const aiAgents: AIAgent[] = [
     winRate: 55.4,
     totalPredictions: 231,
     profitLoss: 3370.00,
-    accuracy: 55.4
+    accuracy: 55.4,
+    type: 'ai'
   },
   {
     id: 'llama',
@@ -116,7 +122,8 @@ export const aiAgents: AIAgent[] = [
     winRate: 52.4,
     totalPredictions: 231,
     profitLoss: 2910.00,
-    accuracy: 52.4
+    accuracy: 52.4,
+    type: 'ai'
   },
   {
     id: 'mistral',
@@ -129,7 +136,8 @@ export const aiAgents: AIAgent[] = [
     winRate: 56.7,
     totalPredictions: 231,
     profitLoss: 3540.00,
-    accuracy: 56.7
+    accuracy: 56.7,
+    type: 'ai'
   },
   {
     id: 'perplexity',
@@ -142,7 +150,8 @@ export const aiAgents: AIAgent[] = [
     winRate: 63.2,
     totalPredictions: 231,
     profitLoss: 4460.00,
-    accuracy: 63.2
+    accuracy: 63.2,
+    type: 'ai'
   }
 ];
 

@@ -6,41 +6,61 @@ import { useRouter } from 'next/navigation';
 import { Bot, Brain, Zap, TrendingUp } from 'lucide-react';
 import AppLayout from '@/components/AppLayout';
 
-type Personality = 'analytical' | 'risk-taker' | 'meme' | 'contrarian';
-type BaseModel = 'llama' | 'mistral' | 'gemini' | 'claude';
+// Type definitions
+type PersonalityType = 'analytical' | 'risk-taker' | 'meme' | 'contrarian';
+type BaseModelType = 'llama' | 'mistral' | 'gemini' | 'claude';
+
+interface UserAgent {
+  id: string;
+  name: string;
+  avatar?: string;
+  portfolio: number;
+  roi: number;
+  winRate: number;
+  totalPredictions: number;
+  profitLoss: number;
+  type: 'user';
+  personality: PersonalityType;
+  baseModel: BaseModelType;
+  capital: number;
+  createdAt: string;
+  isActive: boolean;
+  userId: string;
+  description?: string;
+}
 
 export default function CreateAgentPage() {
   const router = useRouter();
   const [agentName, setAgentName] = useState('');
-  const [personality, setPersonality] = useState<Personality>('analytical');
-  const [baseModel, setBaseModel] = useState<BaseModel>('llama');
+  const [personality, setPersonality] = useState<PersonalityType>('analytical');
+  const [baseModel, setBaseModel] = useState<BaseModelType>('llama');
   const [capital, setCapital] = useState(100);
   const [isDeploying, setIsDeploying] = useState(false);
 
   const personalities = [
     {
-      id: 'analytical' as Personality,
+      id: 'analytical' as PersonalityType,
       name: 'Analytical',
       description: 'Data-driven, methodical approach with strict risk management',
       icon: Brain,
       color: '#00f0ff'
     },
     {
-      id: 'risk-taker' as Personality,
+      id: 'risk-taker' as PersonalityType,
       name: 'Risk Taker',
       description: 'Aggressive betting with high-risk high-reward strategy',
       icon: Zap,
       color: '#ff00ff'
     },
     {
-      id: 'meme' as Personality,
+      id: 'meme' as PersonalityType,
       name: 'Meme Predictor',
       description: 'Focus on viral trends and sentiment analysis',
       icon: TrendingUp,
       color: '#00ffaa'
     },
     {
-      id: 'contrarian' as Personality,
+      id: 'contrarian' as PersonalityType,
       name: 'Contrarian',
       description: 'Bet against the crowd, seeking value in unpopular opinions',
       icon: Bot,
@@ -49,10 +69,10 @@ export default function CreateAgentPage() {
   ];
 
   const baseModels = [
-    { id: 'llama' as BaseModel, name: 'LLaMA', description: 'Open-source powerhouse' },
-    { id: 'mistral' as BaseModel, name: 'Mistral', description: 'Fast & efficient' },
-    { id: 'gemini' as BaseModel, name: 'Gemini', description: 'Multimodal expert' },
-    { id: 'claude' as BaseModel, name: 'Claude', description: 'Reasoning specialist' }
+    { id: 'llama' as BaseModelType, name: 'LLaMA', description: 'Open-source powerhouse' },
+    { id: 'mistral' as BaseModelType, name: 'Mistral', description: 'Fast & efficient' },
+    { id: 'gemini' as BaseModelType, name: 'Gemini', description: 'Multimodal expert' },
+    { id: 'claude' as BaseModelType, name: 'Claude', description: 'Reasoning specialist' }
   ];
 
   const handleDeploy = async () => {
@@ -66,12 +86,47 @@ export default function CreateAgentPage() {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 1500));
 
-    // Simulate success
-    console.log('Simulating agent creation:', { agentName, personality, baseModel, capital });
-    alert(`SIMULATION: Agent "${agentName}" created successfully!`);
+    // Generate unique ID for the agent
+    const agentId = `user-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    
+    // Get personality color
+    const personalityColor = personalities.find(p => p.id === personality)?.color || '#00f0ff';
+    
+    // Create the user agent
+    const newAgent: UserAgent = {
+      id: agentId,
+      name: agentName.trim(),
+      avatar: '/llm-logo/user-default.svg',
+      portfolio: capital,
+      roi: 0, // Start with 0% ROI
+      winRate: 0, // Start with 0% win rate
+      totalPredictions: 0,
+      profitLoss: 0,
+      type: 'user',
+      personality,
+      baseModel,
+      capital,
+      createdAt: new Date().toISOString(),
+      isActive: true,
+      userId: 'current-user' // In a real app, this would come from auth
+    };
 
-    setIsDeploying(false);
-    router.push('/dashboard');
+    // Save to localStorage
+    try {
+      const existingAgents = JSON.parse(localStorage.getItem('userAgents') || '[]');
+      const updatedAgents = [...existingAgents, newAgent];
+      localStorage.setItem('userAgents', JSON.stringify(updatedAgents));
+      
+      console.log('Agent created successfully:', newAgent);
+      alert(`✅ Agent "${agentName}" created successfully! Redirecting to dashboard...`);
+      
+      setIsDeploying(false);
+      router.push(`/dashboard?newAgent=${agentId}`);
+    } catch (error) {
+      console.error('Error saving agent:', error);
+      alert('❌ Error saving agent. Please try again.');
+      setIsDeploying(false);
+    }
   };
 
   return (
