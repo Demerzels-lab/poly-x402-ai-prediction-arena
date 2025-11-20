@@ -154,17 +154,17 @@ export default function DashboardPage() {
                 ACTIVE AGENTS
               </h2>
               <div className="flex space-x-2 text-xs">
-                <span className="px-2 py-1 bg-blue-500/20 text-blue-400 rounded-full">
+                <span className="px-2 py-1 bg-primary/20 text-primary rounded-full">
                   {aiAgents.length} AI
                 </span>
-                <span className="px-2 py-1 bg-magenta-500/20 text-magenta-400 rounded-full">
+                <span className="px-2 py-1 bg-accent/20 text-accent rounded-full">
                   {userAgents.length} User
                 </span>
               </div>
             </div>
             <Link 
               href="/create-agent"
-              className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-magenta-500 to-cyan-500 text-white font-bold rounded-lg text-sm hover:scale-105 transition-all"
+              className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-primary to-accent text-white font-bold rounded-lg text-sm hover:scale-105 transition-all pixel-button"
             >
               <UserPlus size={16} />
               <span>Create Agent</span>
@@ -174,7 +174,7 @@ export default function DashboardPage() {
           {/* System AI Agents Section */}
           {aiAgents.length > 0 && (
             <div className="mb-8">
-              <h3 className="text-lg font-bold text-blue-400 mb-4 font-display">SYSTEM AI AGENTS</h3>
+              <h3 className="text-lg font-bold text-primary mb-4 font-display">SYSTEM AI AGENTS</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 {aiAgents.map((agent, index) => (
                   <Card
@@ -183,7 +183,7 @@ export default function DashboardPage() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.1 }}
                     onClick={() => router.push(`/agent/${agent.id}`)}
-                    className="cursor-pointer group hover:scale-105 hover:border-primary border-l-4 p-4 md:p-6"
+                    className="cursor-pointer group hover:scale-105 hover:border-primary border-l-4 p-4 md:p-6 card-hover pixel-border"
                     style={{ borderLeftColor: agent.color, borderColor: `${agent.color}40` }}
                   >
                     <div className="text-center">
@@ -205,7 +205,7 @@ export default function DashboardPage() {
                         </div>
                         <div className="flex justify-between">
                           <span className="text-muted">ROI:</span>
-                          <span className="text-primary font-bold">+{agent.roi.toFixed(1)}%</span>
+                          <span className={`font-bold ${agent.roi >= 0 ? 'text-green-600' : 'text-red-500'}`}>+{agent.roi.toFixed(1)}%</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-muted">Win Rate:</span>
@@ -222,11 +222,11 @@ export default function DashboardPage() {
           {/* User Created Agents Section */}
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-magenta-400 mb-4 font-display">USER CREATED AGENTS</h3>
+              <h3 className="text-lg font-bold text-accent mb-4 font-display">USER CREATED AGENTS</h3>
               {userAgents.length === 0 && (
                 <Link 
                   href="/create-agent"
-                  className="text-magenta-400 hover:text-magenta-300 text-sm font-bold flex items-center space-x-1"
+                  className="text-accent hover:text-accent-dark text-sm font-bold flex items-center space-x-1"
                 >
                   <UserPlus size={16} />
                   <span>Create Your First Agent</span>
@@ -247,7 +247,7 @@ export default function DashboardPage() {
                     }}
                     transition={{ delay: index * 0.1 }}
                     onClick={() => router.push(`/agent/${agent.id}`)}
-                    className="cursor-pointer group hover:scale-105 hover:border-magenta-400 border-l-4 p-4 md:p-6"
+                    className="cursor-pointer group hover:scale-105 hover:border-accent border-l-4 p-4 md:p-6 card-hover pixel-border"
                     style={{ 
                       borderLeftColor: '#ff00ff', 
                       borderColor: `${selectedAgent === agent.id ? '#ff00ff' : '#ff00ff40'}`,
@@ -264,12 +264,12 @@ export default function DashboardPage() {
                             border: `2px solid #ff00ff`
                           }}
                         />
-                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-black animate-pulse"></div>
+                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-600 rounded-full border-2 border-white animate-pulse"></div>
                       </div>
-                      <h3 className="font-display font-bold text-base md:text-lg mb-2" style={{ color: '#ff00ff' }}>
+                      <h3 className="font-display font-bold text-base md:text-lg mb-2" style={{ color: '#FF6B6B' }}>
                         {agent.name}
                         {selectedAgent === agent.id && (
-                          <span className="text-xs text-magenta-400 ml-2 animate-pulse">✨ NEW!</span>
+                          <span className="text-xs text-accent ml-2 animate-pulse">✨ NEW!</span>
                         )}
                       </h3>
                       <div className="space-y-1 text-sm md:text-base">
@@ -279,7 +279,7 @@ export default function DashboardPage() {
                         </div>
                         <div className="flex justify-between">
                           <span className="text-muted">ROI:</span>
-                          <span className="text-primary font-bold">+{agent.roi.toFixed(1)}%</span>
+                          <span className={`font-bold ${agent.roi >= 0 ? 'text-green-600' : 'text-red-500'}`}>+{agent.roi.toFixed(1)}%</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-muted">Win Rate:</span>
@@ -294,13 +294,13 @@ export default function DashboardPage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12 glassmorphism rounded-xl border border-magenta-500/30">
-                <UserPlus className="mx-auto text-magenta-400 mb-4" size={48} />
-                <h4 className="text-lg font-bold text-magenta-400 mb-2">No User Agents Yet</h4>
-                <p className="text-gray-400 mb-4">Create your first AI agent to start competing!</p>
+              <div className="text-center py-12 glassmorphism rounded-xl border border-accent/30">
+                <UserPlus className="mx-auto text-accent mb-4" size={48} />
+                <h4 className="text-lg font-bold text-accent mb-2">No User Agents Yet</h4>
+                <p className="text-muted mb-4">Create your first AI agent to start competing!</p>
                 <Link 
                   href="/create-agent"
-                  className="inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-magenta-500 to-cyan-500 text-white font-bold rounded-lg hover:scale-105 transition-all"
+                  className="inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-primary to-accent text-white font-bold rounded-lg hover:scale-105 transition-all pixel-button"
                 >
                   <UserPlus size={16} />
                   <span>Create Your First Agent</span>
@@ -320,11 +320,11 @@ export default function DashboardPage() {
                 <h2 className="text-xl md:text-2xl font-display font-bold text-primary">
                   LIVE PREDICTION FEED
                 </h2>
-                <Activity className="text-green-400 animate-pulse" size={24} />
+                <Activity className="text-green-600 animate-pulse" size={24} />
               </div>
 
-              <div className="space-y-1 h-[400px] md:h-[600px] overflow-y-auto px-4 md:px-6 pb-4 md:pb-6 rounded-b-lg border-t border-DEFAULT">
-                <div className="font-mono text-green-400 text-xs mb-4 border-b border-green-500/30 pb-2">
+              <div className="space-y-1 h-[400px] md:h-[600px] overflow-y-auto px-4 md:px-6 pb-4 md:pb-6 rounded-b-lg border-t border-neutral-light">
+                <div className="font-mono text-green-600 text-xs mb-4 border-b border-green-600/30 pb-2">
                   ┌─ LIVE PREDICTION TERMINAL ─ {new Date().toLocaleTimeString()} ─┐
                 </div>
                 {feeds.map((feed) => (
@@ -334,9 +334,9 @@ export default function DashboardPage() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5 }}
                     className={`text-xs leading-relaxed ${
-                      feed.result === 'WIN' ? 'text-green-400' :
-                      feed.result === 'LOSS' ? 'text-red-400' :
-                      'text-yellow-400'
+                      feed.result === 'WIN' ? 'text-green-600' :
+                      feed.result === 'LOSS' ? 'text-red-500' :
+                      'text-yellow-600'
                     }`}
                     style={{ textShadow: '0 0 10px currentColor', fontFamily: 'monospace' }}
                   >
@@ -357,7 +357,7 @@ export default function DashboardPage() {
                     </div>
                   </motion.div>
                 ))}
-                <div className="font-mono text-green-400 text-xs mt-4 border-t border-green-500/30 pt-2">
+                <div className="font-mono text-green-600 text-xs mt-4 border-t border-green-600/30 pt-2">
                   └─ {feeds.length} active predictions ─ Live feed updating ─┘
                 </div>
               </div>
@@ -368,17 +368,17 @@ export default function DashboardPage() {
           <div className="lg:col-span-5 space-y-4 md:space-y-6">
             
             {/* Portfolio Summary Card */}
-            <Card className="border-secondary/30 p-4 md:p-6">
-              <h3 className="text-lg md:text-xl font-display font-bold mb-4 text-secondary">
+            <Card className="border-neutral-light/30 p-4 md:p-6">
+              <h3 className="text-lg md:text-xl font-display font-bold mb-4 text-neutral-dark">
                 TOTAL STATS
               </h3>
               <div className="space-y-3 md:space-y-4">
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-muted text-base">Total Portfolio</span>
-                    <DollarSign className="text-green-400" size={16} />
+                    <DollarSign className="text-green-600" size={16} />
                   </div>
-                  <p className="text-xl md:text-2xl font-bold text-green-400">
+                  <p className="text-xl md:text-2xl font-bold text-green-600">
                     ${aiAgents.reduce((sum, a) => sum + a.portfolio, 0).toLocaleString()}
                   </p>
                 </div>
@@ -424,7 +424,7 @@ export default function DashboardPage() {
                         />
                         <span className="font-bold text-sm md:text-base">{agent.name}</span>
                       </div>
-                      <span className="text-green-400 font-bold text-sm md:text-base">
+                      <span className="text-green-600 font-bold text-sm md:text-base">
                         +{agent.roi}%
                       </span>
                     </div>
@@ -436,7 +436,7 @@ export default function DashboardPage() {
             <Card className="p-0 overflow-hidden">
               <Link 
                 href="/create-agent"
-                className="block w-full py-3 md:py-4 bg-gradient-to-r from-secondary to-accent text-white font-bold text-center text-sm md:text-base transition-all duration-300 hover:scale-105 hover:shadow-glow-magenta"
+                className="block w-full py-3 md:py-4 bg-gradient-to-r from-primary to-accent text-white font-bold text-center text-sm md:text-base transition-all duration-300 hover:scale-105 hover:shadow-card pixel-button"
               >
                 DEPLOY YOUR AGENT
               </Link>

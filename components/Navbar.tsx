@@ -18,19 +18,19 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 glassmorphism border-b border-cyan-500/30 z-50">
+    <nav className="fixed top-0 left-0 right-0 glassmorphism border-b border-neutral-light z-50">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 md:h-16">
           <Link 
             href="/"
-            className="text-xl md:text-2xl font-bold bg-gradient-to-r from-green-400 to-magenta-500 bg-clip-text text-transparent"
+            className="text-xl md:text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent pixel-button"
             style={{ fontFamily: 'var(--font-orbitron)' }}
           >
             POLYx402
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex glassmorphism border border-primary/30 rounded-lg p-1 space-x-1">
+          <div className="hidden md:flex glassmorphism border border-neutral-light rounded-lg p-1 space-x-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
@@ -42,8 +42,8 @@ export default function Navbar() {
                   className={`
                     flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-300
                     ${isActive 
-                      ? 'bg-green-500/20 text-green-400 border border-green-500/50 shadow-lg' 
-                      : 'text-gray-300 hover:text-green-400 hover:bg-green-500/10'
+                      ? 'bg-primary/10 text-primary border border-primary/30 shadow-card' 
+                      : 'text-neutral-dark hover:text-primary hover:bg-primary/5'
                     }
                   `}
                 >
@@ -62,7 +62,7 @@ export default function Navbar() {
                 href="https://github.com/Demerzels-lab/poly-x402-ai-prediction-arena"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-300 hover:text-green-400 transition-colors"
+                className="text-neutral-dark hover:text-primary transition-colors"
               >
                 <Github size={20} />
               </Link>
@@ -70,22 +70,22 @@ export default function Navbar() {
                 href="https://x.com/polyx402"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-300 hover:text-green-400 transition-colors"
+                className="text-neutral-dark hover:text-primary transition-colors"
               >
                 <Twitter size={20} />
               </Link>
             </div>
 
             {/* Powered by x402 */}
-            <div className="hidden sm:flex items-center space-x-2 px-3 md:px-4 py-2 rounded-lg bg-purple-500/10 border border-purple-500/30">
-              <span className="text-xs text-purple-400">Powered by</span>
-              <span className="text-sm font-bold text-purple-300">x402</span>
+            <div className="hidden sm:flex items-center space-x-2 px-3 md:px-4 py-2 rounded-lg bg-accent/10 border border-accent/30">
+              <span className="text-xs text-accent">Powered by</span>
+              <span className="text-sm font-bold text-accent-dark">x402</span>
             </div>
 
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 rounded-lg text-gray-300 hover:text-cyan-400 hover:bg-cyan-500/10"
+              className="md:hidden p-2 rounded-lg text-neutral-dark hover:text-primary hover:bg-primary/5"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -95,7 +95,7 @@ export default function Navbar() {
         {/* Mobile Navigation Menu */}
         {isMenuOpen && (
           <div className="md:hidden mt-2 pb-4">
-            <div className="glassmorphism border border-primary/30 rounded-lg p-2 space-y-1">
+            <div className="glassmorphism border border-neutral-light rounded-lg p-2 space-y-1">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
@@ -119,12 +119,12 @@ export default function Navbar() {
                 );
               })}
               {/* Mobile Social Links */}
-              <div className="flex items-center justify-center space-x-4 pt-2 border-t border-gray-600 mt-2">
+              <div className="flex items-center justify-center space-x-4 pt-2 border-t border-neutral-light mt-2">
                 <Link
                   href="https://github.com/Demerzels-lab/poly-x402-ai-prediction-arena"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-green-400 transition-colors"
+                  className="text-neutral-dark hover:text-primary transition-colors"
                 >
                   <Github size={24} />
                 </Link>
@@ -132,7 +132,7 @@ export default function Navbar() {
                   href="https://x.com/polyx402"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-green-400 transition-colors"
+                  className="text-neutral-dark hover:text-primary transition-colors"
                 >
                   <Twitter size={24} />
                 </Link>

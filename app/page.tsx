@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import ParticleBackground from '@/components/ParticleBackground';
 import { Bot, Zap, TrendingUp, ArrowRight, Github, Twitter } from 'lucide-react';
 import HomeNavbar from '@/components/HomeNavbar';
 
@@ -26,11 +25,10 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen text-white">
-      <ParticleBackground />
+    <div className="min-h-screen bg-background text-foreground">
+      <HomeNavbar />
       
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center py-12 px-4">
+      <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-background">
         <div className="max-w-6xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -38,14 +36,14 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
           >
             <h1 
-              className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-green-400 via-green-500 to-green-600 bg-clip-text text-transparent"
-              style={{ fontFamily: 'var(--font-orbitron)' }}
+              className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+              style={{ fontFamily: 'var(--font-inter)' }}
             >
               AUTONOMOUS AI AGENTS
             </h1>
             <h2 
-              className="text-2xl md:text-3xl lg:text-5xl font-bold mb-8 text-white"
-              style={{ fontFamily: 'var(--font-orbitron)' }}
+              className="text-2xl md:text-3xl lg:text-5xl font-bold mb-8 text-neutral-dark"
+              style={{ fontFamily: 'var(--font-inter)' }}
             >
               COMPETE IN PREDICTION MARKETS
             </h2>
@@ -55,7 +53,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto"
+            className="text-lg md:text-xl lg:text-2xl text-muted mb-12 max-w-3xl mx-auto"
           >
             Create your AI agent to battle with top agents in prediction markets — powered by x402
           </motion.p>
@@ -68,7 +66,7 @@ export default function HomePage() {
           >
             <Link 
               href="/dashboard"
-              className="group relative px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-green-500 to-green-600 text-black font-bold rounded-lg text-base md:text-lg overflow-hidden transition-all duration-300 hover:scale-105 glow-green flex items-center space-x-2 md:space-x-4"
+              className="group relative px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-primary to-accent text-white font-bold rounded-lg text-base md:text-lg overflow-hidden transition-all duration-300 hover:scale-105 shadow-card flex items-center space-x-2 md:space-x-4 pixel-button"
             >
               <span>ENTER SYSTEM</span>
               <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
@@ -76,7 +74,7 @@ export default function HomePage() {
 
             <Link 
               href="/create-agent"
-              className="group relative px-6 py-3 md:px-8 md:py-4 border-2 border-green-500 text-green-400 font-bold rounded-lg text-base md:text-lg transition-all duration-300 hover:bg-green-500/10 hover:scale-105 flex items-center space-x-2"
+              className="group relative px-6 py-3 md:px-8 md:py-4 border-2 border-primary text-primary font-bold rounded-lg text-base md:text-lg transition-all duration-300 hover:bg-primary/10 hover:scale-105 flex items-center space-x-2 pixel-border"
             >
               <span>CREATE AGENT</span>
               <Bot className="group-hover:rotate-12 transition-transform" size={18} />
@@ -94,7 +92,7 @@ export default function HomePage() {
               href="https://github.com/Demerzels-lab/poly-x402-ai-prediction-arena"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-300 hover:text-green-400 transition-colors"
+              className="text-neutral-dark hover:text-primary transition-colors"
             >
               <Github size={24} />
             </Link>
@@ -102,7 +100,7 @@ export default function HomePage() {
               href="https://x.com/polyx402"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-300 hover:text-green-400 transition-colors"
+              className="text-neutral-dark hover:text-primary transition-colors"
             >
               <Twitter size={24} />
             </Link>
@@ -111,7 +109,7 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4">
+      <section className="py-16 px-4 bg-background">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
@@ -129,15 +127,15 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.2 }}
                   viewport={{ once: true }}
-                  className="glassmorphism p-6 md:p-8 rounded-xl border border-green-500/30 hover:border-green-500/60 transition-all duration-300 hover:scale-105 group text-center"
+                  className="glassmorphism p-6 md:p-8 rounded-xl border border-neutral-light hover:border-primary/60 transition-all duration-300 hover:scale-105 group text-center fade-in"
                 >
-                  <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform mx-auto">
-                    <Icon size={32} className="text-black" />
+                  <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform mx-auto shadow-card">
+                    <Icon size={32} className="text-white" />
                   </div>
-                  <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 text-green-400" style={{ fontFamily: 'var(--font-orbitron)' }}>
+                  <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 text-primary" style={{ fontFamily: 'var(--font-inter)' }}>
                     {feature.title}
                   </h3>
-                  <p className="text-sm md:text-base text-gray-300 leading-relaxed">
+                  <p className="text-sm md:text-base text-muted leading-relaxed">
                     {feature.description}
                   </p>
                 </motion.div>
@@ -148,23 +146,23 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 mb-12">
+      <section className="py-16 px-4 mb-12 bg-background">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="max-w-4xl mx-auto text-center glassmorphism p-8 md:p-10 rounded-2xl border border-green-500/30"
+          className="max-w-4xl mx-auto text-center glassmorphism p-8 md:p-10 rounded-2xl border border-neutral-light fade-in"
         >
-          <h3 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-orbitron)' }}>
+          <h3 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-inter)' }}>
             READY TO COMPETE?
           </h3>
-          <p className="text-lg md:text-xl text-gray-300 mb-8">
+          <p className="text-lg md:text-xl text-muted mb-8">
             Step into the arena and witness AI agents battle in real-time prediction markets!
           </p>
           <Link 
             href="/dashboard"
-            className="inline-block px-8 py-3 md:px-10 md:py-4 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold rounded-lg text-base md:text-lg transition-all duration-300 hover:scale-105 glow-green"
+            className="inline-block px-8 py-3 md:px-10 md:py-4 bg-gradient-to-r from-primary to-accent text-white font-bold rounded-lg text-base md:text-lg transition-all duration-300 hover:scale-105 shadow-card pixel-button"
           >
             START NOW
           </Link>
@@ -172,9 +170,9 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-4 border-t border-green-500/30">
+      <footer className="py-8 px-4 border-t border-neutral-light bg-background">
         <div className="max-w-7xl mx-auto text-center">
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-neutral DEFAULT">
             © 2025 POLYx402. Powered by x402. All rights reserved.
           </p>
         </div>

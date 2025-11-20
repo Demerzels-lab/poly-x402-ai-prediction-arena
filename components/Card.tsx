@@ -10,8 +10,9 @@ export default function Card({ children, className = '', ...rest }: CardProps) {
   return (
     <motion.div
       className={`
-        glassmorphism bg-card border border-DEFAULT 
-        rounded-xl p-6 ${className}
+        glassmorphism bg-white border border-neutral-light 
+        rounded-xl p-6 card-hover pixel-border fade-in
+        ${className}
       `}
       {...rest} // Pass framer-motion props
     >

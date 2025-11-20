@@ -7,18 +7,28 @@ const config = {
   ],
   theme: {
     extend: {
-      // 1. NEW "RETRO TERMINAL" COLOR PALETTE
+      // 1. NEW "MINIMALIST PIXEL" COLOR PALETTE
       colors: {
-        background: '#000000', // Pure black for a true terminal feel
-        foreground: '#E0E0E0', // Soft white for main text (not pure white)
+        background: '#FFFFFF', // Pure white for clean, minimal look
+        foreground: '#2C2C2C', // Dark grey for optimal readability
         muted: '#666666',     // Muted gray for descriptions
-        card: 'rgba(10, 20, 10, 0.7)', // Dark green-tinted glass
+        card: 'rgba(255, 255, 255, 0.8)', // Clean white glass effect
         
         primary: {
-          DEFAULT: '#39FF14', // Your "Matrix" neon green
-          dark: '#008F11',    // A darker, less saturated green
+          DEFAULT: '#4A90E2', // Soft blue for primary actions
+          dark: '#357ABD',    // Darker blue for hover states
+          light: '#E3F2FD',   // Light blue for backgrounds
         },
-        // We are REMOVING secondary and accent to enforce the monochrome theme
+        accent: {
+          DEFAULT: '#FF6B6B', // Coral for accents and highlights
+          dark: '#FF5252',    // Darker coral for hover
+          light: '#FFEBEE',   // Light coral for backgrounds
+        },
+        neutral: {
+          light: '#E5E5E5',   // Light grey for borders and subtle elements
+          DEFAULT: '#9E9E9E', // Medium grey for secondary text
+          dark: '#616161',    // Dark grey for primary text
+        }
       },
       
       // 2. FONT FAMILY (No change, this is perfect)
@@ -27,13 +37,17 @@ const config = {
         display: ['var(--font-orbitron)', 'sans-serif'],
       },
 
-      // 3. UPDATED BORDERS & GLOWS (Now green)
+      // 3. UPDATED BORDERS & SHADOWS (Clean minimalist)
       borderColor: {
-        DEFAULT: 'rgba(57, 255, 20, 0.3)', // Default border (neon green)
-        dark: 'rgba(0, 143, 17, 0.5)',   // Darker green border
+        DEFAULT: 'rgba(229, 229, 229, 0.8)', // Light grey borders
+        accent: 'rgba(74, 144, 226, 0.3)',   // Blue accent borders
       },
       boxShadow: {
-        'glow-green': '0 0 20px rgba(57, 255, 20, 0.5), 0 0 40px rgba(57, 255, 20, 0.3)',
+        'card': '0 2px 8px rgba(0, 0, 0, 0.1)',
+        'card-hover': '0 4px 16px rgba(0, 0, 0, 0.15)',
+        'pixel': '0 2px 0 rgba(0, 0, 0, 0.1)', // Subtle pixel-like shadow
+        'glow-blue': '0 0 12px rgba(74, 144, 226, 0.3)',
+        'glow-coral': '0 0 12px rgba(255, 107, 107, 0.3)',
       }
     },
   },
