@@ -187,7 +187,7 @@ export default function LeaderboardPage() {
             </div>
 
             {/* Table Body */}
-            <div className="divide-y divide-gray-800 min-w-[600px]">
+            <div className="divide-y divide-gray-800 min-w-[800px]">
               {agentType === 'AI' ? (
                 sortedAgents.map((agent, index) => (
                   <motion.div

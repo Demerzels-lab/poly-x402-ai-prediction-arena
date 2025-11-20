@@ -252,15 +252,15 @@ export default function CreateAgentPage() {
               background: `linear-gradient(to right, #00f0ff 0%, #00f0ff ${(capital - 50) / 9.5}%, #333 ${(capital - 50) / 9.5}%, #333 100%)`
             }}
           />
-          <div className="flex justify-between text-sm text-gray-500 mt-2">
+          <div className="flex justify-between text-sm text-muted mt-2">
             <span>$50</span>
             <span>$1,000</span>
           </div>
         </div>
 
         {/* Agent Preview */}
-        <div className="mb-8 p-6 bg-gradient-to-r from-green-500/10 to-green-600/10 rounded-xl border border-green-500/30">
-          <h3 className="text-lg font-bold mb-4 text-green-400" style={{ fontFamily: 'var(--font-orbitron)' }}>
+        <div className="mb-8 p-6 bg-gradient-to-r from-primary/10 to-accent/10 rounded-xl border border-primary/30">
+          <h3 className="text-lg font-bold mb-4 text-primary" style={{ fontFamily: 'var(--font-inter)' }}>
             AGENT PREVIEW
           </h3>
           <div className="grid md:grid-cols-2 gap-4 text-sm">
@@ -291,10 +291,10 @@ export default function CreateAgentPage() {
         <button
           onClick={handleDeploy}
           disabled={isDeploying}
-          className={`w-full py-4 bg-gradient-to-r from-cyan-500 to-magenta-500 text-white font-bold rounded-xl text-lg transition-all duration-300 ${
+          className={`w-full py-4 bg-gradient-to-r from-primary to-accent text-white font-bold rounded-xl text-lg transition-all duration-300 pixel-button ${
             isDeploying
               ? 'opacity-50 cursor-not-allowed'
-              : 'hover:scale-105 glow-cyan'
+              : 'hover:scale-105 hover:shadow-lg'
           }`}
         >
           {isDeploying ? (
@@ -309,18 +309,18 @@ export default function CreateAgentPage() {
       </motion.div>
 
       {/* Info Cards */}
-      <div className="grid md:grid-cols-3 gap-6 mt-12">
+          <div className="grid md:grid-cols-3 gap-6 mt-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="glassmorphism p-6 rounded-xl border border-cyan-500/20 text-center"
+          className="glassmorphism p-6 rounded-xl border border-primary/20 text-center"
         >
-          <div className="w-12 h-12 rounded-full bg-cyan-500/20 flex items-center justify-center mx-auto mb-3">
-            <Bot className="text-cyan-400" size={24} />
+          <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-3">
+            <Bot className="text-primary" size={24} />
           </div>
-          <h4 className="font-bold mb-2 text-cyan-400">Autonomous</h4>
-          <p className="text-sm text-gray-400">
+          <h4 className="font-bold mb-2 text-primary">Autonomous</h4>
+          <p className="text-sm text-muted">
             Agent operates 24/7 without manual intervention
           </p>
         </motion.div>
@@ -329,13 +329,13 @@ export default function CreateAgentPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="glassmorphism p-6 rounded-xl border border-magenta-500/20 text-center"
+          className="glassmorphism p-6 rounded-xl border border-accent/20 text-center"
         >
-          <div className="w-12 h-12 rounded-full bg-magenta-500/20 flex items-center justify-center mx-auto mb-3">
-            <Zap className="text-magenta-400" size={24} />
+          <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center mx-auto mb-3">
+            <Zap className="text-accent" size={24} />
           </div>
-          <h4 className="font-bold mb-2 text-magenta-400">Fast Execution</h4>
-          <p className="text-sm text-gray-400">
+          <h4 className="font-bold mb-2 text-accent">Fast Execution</h4>
+          <p className="text-sm text-muted">
             Predictions executed in milliseconds with x402
           </p>
         </motion.div>
@@ -344,13 +344,13 @@ export default function CreateAgentPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="glassmorphism p-6 rounded-xl border border-purple-500/20 text-center"
+          className="glassmorphism p-6 rounded-xl border border-neutral-dark text-center"
         >
-          <div className="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center mx-auto mb-3">
-            <TrendingUp className="text-purple-400" size={24} />
+          <div className="w-12 h-12 rounded-full bg-neutral-light flex items-center justify-center mx-auto mb-3">
+            <TrendingUp className="text-foreground" size={24} />
           </div>
-          <h4 className="font-bold mb-2 text-purple-400">Adaptive Learning</h4>
-          <p className="text-sm text-gray-400">
+          <h4 className="font-bold mb-2 text-foreground">Adaptive Learning</h4>
+          <p className="text-sm text-muted">
             Agent learns from results and improves strategy over time
           </p>
         </motion.div>

@@ -14,15 +14,21 @@ export default function HomeNavbar() {
           <Link 
             href={"/"}
             className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
-            style={{ fontFamily: 'var(--font-inter)' }}
+            style={{ fontFamily: 'var(--font-inter)', fontWeight: '800' }}
           >
             POLYx402
           </Link>
 
-          <div className="flex items-center space-x-4">
-            <div className="hidden sm:flex items-center space-x-2 px-4 py-2 rounded-lg bg-accent/10 border border-accent/30">
-              <span className="text-xs text-accent">Powered by</span>
-              <span className="text-sm font-bold text-accent-dark">x402</span>
+          <div className="flex items-center space-x-3">
+            {/* Desktop "Powered by" */}
+            <div className="hidden sm:flex items-center space-x-2 px-4 py-2 rounded-lg bg-primary/10 border border-primary/30">
+              <span className="text-xs text-foreground">Powered by</span>
+              <span className="text-sm font-bold text-primary">x402</span>
+            </div>
+            
+            {/* Mobile "Powered by" */}
+            <div className="sm:hidden flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/30">
+              <span className="text-xs text-foreground">x402</span>
             </div>
           </div>
         </div>
