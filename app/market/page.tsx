@@ -209,7 +209,7 @@ export default function MarketPage() {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e: React.MouseEvent) => e.stopPropagation()}
               className="glassmorphism max-w-4xl w-full p-8 rounded-2xl border border-cyan-500/50 max-h-[90vh] overflow-y-auto"
             >
               {/* Modal content remains unchanged */}
