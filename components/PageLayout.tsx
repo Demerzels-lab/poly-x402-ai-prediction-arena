@@ -1,6 +1,6 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import ParticleBackground from '@/components/ParticleBackground';
+import { InteractiveBackground as ParticleBackground } from '@/components/InteractiveBackground';
 
 type PageLayoutProps = {
   children: React.ReactNode;

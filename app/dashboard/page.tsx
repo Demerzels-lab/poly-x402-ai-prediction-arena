@@ -164,7 +164,7 @@ export default function DashboardPage() {
             </div>
             <Link 
               href="/create-agent"
-              className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-primary to-accent text-white font-bold rounded-lg text-sm hover:scale-105 transition-all pixel-button"
+              className="flex items-center space-x-2 px-4 py-2 bg-[#111E36] hover:bg-[#111E36]/90 text-white font-bold rounded-lg text-sm hover:scale-105 transition-all pixel-button"
             >
               <UserPlus size={16} />
               <span>Create Agent</span>
@@ -249,8 +249,8 @@ export default function DashboardPage() {
                     onClick={() => router.push(`/agent/${agent.id}`)}
                     className="cursor-pointer group hover:scale-105 hover:border-accent border-l-4 p-4 md:p-6 card-hover pixel-border"
                     style={{ 
-                      borderLeftColor: '#ff00ff', 
-                      borderColor: `${selectedAgent === agent.id ? '#ff00ff' : '#ff00ff40'}`,
+                      borderLeftColor: '#1E293B', 
+                      borderColor: `${selectedAgent === agent.id ? '#1E293B' : '#1E293B40'}`,
                       animation: selectedAgent === agent.id ? 'pulse 2s infinite' : 'none'
                     }}
                   >
@@ -261,12 +261,12 @@ export default function DashboardPage() {
                           alt={agent.name}
                           className="w-12 h-12 md:w-16 md:h-16 rounded-full mx-auto mb-3 md:mb-4"
                           style={{ 
-                            border: `2px solid #ff00ff`
+                            border: `2px solid #1E293B`
                           }}
                         />
                         <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-600 rounded-full border-2 border-white animate-pulse"></div>
                       </div>
-                      <h3 className="font-display font-bold text-base md:text-lg mb-2" style={{ color: '#FF6B6B' }}>
+                      <h3 className="font-display font-bold text-base md:text-lg mb-2" style={{ color: '#1E293B' }}>
                         {agent.name}
                         {selectedAgent === agent.id && (
                           <span className="text-xs text-accent ml-2 animate-pulse">✨ NEW!</span>
@@ -300,7 +300,7 @@ export default function DashboardPage() {
                 <p className="text-muted mb-4">Create your first AI agent to start competing!</p>
                 <Link 
                   href="/create-agent"
-                  className="inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-primary to-accent text-white font-bold rounded-lg hover:scale-105 transition-all pixel-button"
+                  className="inline-flex items-center space-x-2 px-6 py-3 bg-[#111E36] hover:bg-[#111E36]/90 text-white font-bold rounded-lg hover:scale-105 transition-all pixel-button"
                 >
                   <UserPlus size={16} />
                   <span>Create Your First Agent</span>
@@ -432,11 +432,10 @@ export default function DashboardPage() {
               </div>
             </Card>
 
-            {/* CTA Card */}
             <Card className="p-0 overflow-hidden">
               <Link 
                 href="/create-agent"
-                className="block w-full py-3 md:py-4 bg-gradient-to-r from-primary to-accent text-white font-bold text-center text-sm md:text-base transition-all duration-300 hover:scale-105 hover:shadow-card pixel-button"
+                className="block w-full py-3 md:py-4 bg-[#111E36] hover:bg-[#111E36]/90 text-white font-bold text-center text-sm md:text-base transition-all duration-300 hover:scale-105 hover:shadow-card pixel-button"
               >
                 DEPLOY YOUR AGENT
               </Link>

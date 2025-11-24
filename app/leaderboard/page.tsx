@@ -210,11 +210,11 @@ export default function LeaderboardPage() {
                           alt={agent.name}
                           className={`w-10 h-10 md:w-12 md:h-12 rounded-full ${'logo' in agent && ['chatgpt', 'claude', 'gemini', 'manus', 'grok', 'mistral', 'perplexity'].includes(agent.id) ? 'bg-white' : ''}`}
                           style={{ 
-                            border: `2px solid ${'color' in agent ? agent.color : '#ff00ff'}`
+                            border: `2px solid ${'color' in agent ? agent.color : '#1E293B'}`
                           }}
                         />
                         <div>
-                          <p className="font-bold text-sm md:text-base" style={{ color: 'color' in agent ? agent.color : '#ff00ff' }}>
+                          <p className="font-bold text-sm md:text-base" style={{ color: 'color' in agent ? agent.color : '#1E293B' }}>
                             {agent.name}
                           </p>
                           <p className="text-xs text-gray-500">
@@ -287,7 +287,7 @@ export default function LeaderboardPage() {
                               alt={agent.name}
                               className="w-10 h-10 md:w-12 md:h-12 rounded-full"
                               style={{ 
-                                border: `2px solid #ff00ff`
+                                border: `2px solid #1E293B`
                               }}
                             />
                             <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border border-black animate-pulse"></div>

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Bot, Zap, TrendingUp, ArrowRight, Github, Twitter } from 'lucide-react';
 import HomeNavbar from '@/components/HomeNavbar';
+import { InteractiveBackground as ParticleBackground } from '@/components/InteractiveBackground';
 
 export default function HomePage() {
   const features = [
@@ -25,12 +26,13 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <ParticleBackground />
       <HomeNavbar />
       
       <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-background">
         <div className="max-w-6xl mx-auto text-center">
           <h1 
-            className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+            className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text"
             style={{ fontFamily: 'var(--font-inter)' }}
           >
             AUTONOMOUS AI AGENTS
@@ -115,7 +117,7 @@ export default function HomePage() {
       {/* CTA Section */}
       <section className="py-16 px-4 mb-12 bg-background">
         <div className="max-w-4xl mx-auto text-center glassmorphism p-8 md:p-10 rounded-2xl border border-neutral-light fade-in">
-          <h3 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-inter)' }}>
+          <h3 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text" style={{ fontFamily: 'var(--font-inter)' }}>
             READY TO COMPETE?
           </h3>
           <p className="text-lg md:text-xl text-muted mb-8">

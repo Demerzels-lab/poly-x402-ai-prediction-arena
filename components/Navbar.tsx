@@ -23,10 +23,10 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-14 md:h-16">
           <Link 
             href="/"
-            className="text-xl md:text-2xl font-bold bg-gradient-to-r from-green-400 to-magenta-500 bg-clip-text text-transparent"
+            className="text-xl md:text-2xl font-bold bg-gradient-to-r from-[#111E36] to-[#111E36] bg-clip-text text-transparent"
             style={{ fontFamily: 'var(--font-orbitron)' }}
           >
-            KALSH402
+            Polyx402
           </Link>
 
           {/* Desktop Navigation */}

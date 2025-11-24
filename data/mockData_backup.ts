@@ -57,7 +57,7 @@ export const aiAgents: AIAgent[] = [
     id: 'claude',
     name: 'Claude',
     icon: '🎯',
-    logo: 'claude.svg',
+    logo: 'claude.png',
     color: '#ff00ff',
     portfolio: 15230.00,
     roi: 52.3,

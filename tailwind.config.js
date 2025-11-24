@@ -9,7 +9,7 @@ const config = {
     extend: {
       // 1. "MINIMALIST PIXEL" COLOR PALETTE
       colors: {
-        background: '#FFFFFF', // Clean white background
+        background: '#FFFFFF', // Clean white background (matches InteractiveBackground)
         foreground: '#1a1a1a', // Dark text for excellent contrast
         muted: '#666666',     // Muted gray for descriptions
         card: 'rgba(255, 255, 255, 0.8)', // Clean white glass effect
@@ -19,14 +19,14 @@ const config = {
         },
         
         primary: {
-          DEFAULT: '#4A90E2', // Soft blue for primary elements
-          dark: '#357abd',    // Darker blue for hover states
-          light: '#6ba3e5',   // Lighter blue for highlights
+          DEFAULT: '#3B82F6', // Tech blue from InteractiveBackground lines (rgba(59, 130, 246, 0.3) -> solid)
+          dark: '#2563EB',    // Darker tech blue for hover states
+          light: '#60A5FA',   // Lighter tech blue for highlights
         },
         accent: {
-          DEFAULT: '#FF6B6B', // Coral for accent elements
-          dark: '#e55555',    // Darker coral for hover
-          light: '#ff8585',   // Lighter coral for highlights
+          DEFAULT: '#111E36', // Navy from InteractiveBackground particles (rgba(17, 30, 54, 0.7) -> solid)
+          dark: '#0F172A',    // Darker navy for hover
+          light: '#1E293B',   // Lighter navy for highlights
         },
       },
       

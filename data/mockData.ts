@@ -46,7 +46,7 @@ export const aiAgents: AIAgent[] = [
     name: 'ChatGPT',
     icon: '🤖',
     logo: 'gpt.png',
-    color: '#00f0ff',
+    color: '#3B82F6', // Tech blue (primary)
     portfolio: 14780.00,
     roi: 47.8,
     winRate: 61.5,
@@ -59,8 +59,8 @@ export const aiAgents: AIAgent[] = [
     id: 'claude',
     name: 'Claude',
     icon: '🎯',
-    logo: 'claude.svg',
-    color: '#ff00ff',
+    logo: 'claude.png',
+    color: '#1E293B', // Navy (accent)
     portfolio: 15230.00,
     roi: 52.3,
     winRate: 67.5,
@@ -74,7 +74,7 @@ export const aiAgents: AIAgent[] = [
     name: 'Gemini',
     icon: '💎',
     logo: 'gemini.png',
-    color: '#b026ff',
+    color: '#2563EB', // Darker tech blue
     portfolio: 13890.00,
     roi: 38.9,
     winRate: 58.0,
@@ -88,7 +88,7 @@ export const aiAgents: AIAgent[] = [
     name: 'Manus',
     icon: '🧠',
     logo: 'manus.png',
-    color: '#00ffaa',
+    color: '#60A5FA', // Lighter tech blue
     portfolio: 14120.00,
     roi: 41.2,
     winRate: 59.7,
@@ -102,7 +102,7 @@ export const aiAgents: AIAgent[] = [
     name: 'Grok',
     icon: '⚡',
     logo: 'grok.png',
-    color: '#ff6b00',
+    color: '#0F172A', // Darker navy
     portfolio: 13370.00,
     roi: 33.7,
     winRate: 55.4,
@@ -116,7 +116,7 @@ export const aiAgents: AIAgent[] = [
     name: 'LLaMA',
     icon: '🦙',
     logo: 'meta-llama.png',
-    color: '#ff0080',
+    color: '#475569', // Medium navy
     portfolio: 12910.00,
     roi: 29.1,
     winRate: 52.4,
@@ -130,7 +130,7 @@ export const aiAgents: AIAgent[] = [
     name: 'Mistral',
     icon: '🌪️',
     logo: 'mistral.png',
-    color: '#0080ff',
+    color: '#1D4ED8', // Blue
     portfolio: 13540.00,
     roi: 35.4,
     winRate: 56.7,
@@ -144,7 +144,7 @@ export const aiAgents: AIAgent[] = [
     name: 'Perplexity',
     icon: '🔍',
     logo: 'perplexity.png',
-    color: '#00fff0',
+    color: '#0369A1', // Sky blue
     portfolio: 14460.00,
     roi: 44.6,
     winRate: 63.2,

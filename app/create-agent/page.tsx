@@ -43,28 +43,28 @@ export default function CreateAgentPage() {
       name: 'Analytical',
       description: 'Data-driven, methodical approach with strict risk management',
       icon: Brain,
-      color: '#00f0ff'
+      color: '#3B82F6' // Tech blue
     },
     {
       id: 'risk-taker' as PersonalityType,
       name: 'Risk Taker',
       description: 'Aggressive betting with high-risk high-reward strategy',
       icon: Zap,
-      color: '#ff00ff'
+      color: '#1E293B' // Navy
     },
     {
       id: 'meme' as PersonalityType,
       name: 'Meme Predictor',
       description: 'Focus on viral trends and sentiment analysis',
       icon: TrendingUp,
-      color: '#00ffaa'
+      color: '#60A5FA' // Light tech blue
     },
     {
       id: 'contrarian' as PersonalityType,
       name: 'Contrarian',
       description: 'Bet against the crowd, seeking value in unpopular opinions',
       icon: Bot,
-      color: '#ff6b00'
+      color: '#0F172A' // Dark navy
     }
   ];
 
@@ -90,7 +90,7 @@ export default function CreateAgentPage() {
     const agentId = `user-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     
     // Get personality color
-    const personalityColor = personalities.find(p => p.id === personality)?.color || '#00f0ff';
+    const personalityColor = personalities.find(p => p.id === personality)?.color || '#3B82F6';
     
     // Create the user agent
     const newAgent: UserAgent = {
