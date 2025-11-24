@@ -202,9 +202,11 @@ export default function LeaderboardPage() {
                 {sortedAgents.length > 0 ? (
                   sortedAgents.map((agent, index) => {
                     // Fallback logic for avatar
-                    const avatarSrc = (agent as any).logo 
-                      ? `/llm-logo/${(agent as any).logo}` 
-                      : (agent.avatar || '/llm-logo/agent-placeholder.png');
+                    const avatarSrc = 'logo' in agent 
+                      ? `/llm-logo/${agent.logo}` 
+                      : 'avatar' in agent 
+                        ? `/llm-logo/${agent.avatar || 'agent_placeholder.png'}`
+                        : '/llm-logo/agent_placeholder.png';
                     
                     const borderColor = 'color' in agent ? agent.color : '#1E293B';
 
