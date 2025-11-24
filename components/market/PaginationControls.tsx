@@ -63,7 +63,7 @@ export default function PaginationControls({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-3 py-2 bg-gray-800 text-gray-400 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-700 hover:text-cyan-400 transition-all flex items-center space-x-1"
+        className="px-3 py-2 bg-accent text-white rounded-lg disabled:opacity-30 disabled:cursor-not-allowed hover:bg-primary hover:text-white transition-all flex items-center space-x-1"
         aria-label="Previous page"
       >
         <ChevronLeft size={16} />
@@ -90,8 +90,8 @@ export default function PaginationControls({
               onClick={() => onPageChange(pageNum)}
               className={`px-3 py-2 rounded-lg font-bold transition-all min-w-[40px] ${
                 isActive
-                  ? 'bg-gradient-to-r from-cyan-500 to-purple-500 text-white shadow-lg'
-                  : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-cyan-400'
+                  ? 'bg-gradient-to-r from-primary to-accent text-white shadow-lg'
+                  : 'bg-accent text-white hover:bg-primary hover:text-white'
               }`}
               aria-label={`Page ${pageNum}`}
               aria-current={isActive ? 'page' : undefined}
@@ -106,7 +106,7 @@ export default function PaginationControls({
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-3 py-2 bg-gray-800 text-gray-400 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-700 hover:text-cyan-400 transition-all flex items-center space-x-1"
+        className="px-3 py-2 bg-accent text-white rounded-lg disabled:opacity-30 disabled:cursor-not-allowed hover:bg-primary hover:text-white transition-all flex items-center space-x-1"
         aria-label="Next page"
       >
         <span className="hidden sm:inline">Next</span>

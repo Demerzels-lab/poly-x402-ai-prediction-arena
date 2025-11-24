@@ -8,6 +8,7 @@ import { aiAgents as defaultAgents, AIAgent } from '@/data/mockData';
 import { Trophy, TrendingUp, Target, DollarSign, Users, UserPlus } from 'lucide-react';
 import AppLayout from '@/components/AppLayout';
 import Link from 'next/link';
+import AgentImage from '@/components/AgentImage';
 
 // UserAgent type definition
 interface UserAgent {
@@ -205,13 +206,11 @@ export default function LeaderboardPage() {
 
                       {/* Agent Name */}
                       <div className="col-span-2 flex items-center space-x-2 md:space-x-3">
-                        <img
-                          src={`/llm-logo/${'logo' in agent ? agent.logo : 'user-default.svg'}`}
-                          alt={agent.name}
-                          className={`w-10 h-10 md:w-12 md:h-12 rounded-full ${'logo' in agent && ['chatgpt', 'claude', 'gemini', 'manus', 'grok', 'mistral', 'perplexity'].includes(agent.id) ? 'bg-white' : ''}`}
-                          style={{ 
-                            border: `2px solid ${'color' in agent ? agent.color : '#1E293B'}`
-                          }}
+                        <AgentImage
+                          agent={agent}
+                          size="medium"
+                          borderColor={'color' in agent ? agent.color : '#1E293B'}
+                          className={'logo' in agent && ['chatgpt', 'claude', 'gemini', 'manus', 'grok', 'mistral', 'perplexity'].includes(agent.id) ? 'bg-white' : ''}
                         />
                         <div>
                           <p className="font-bold text-sm md:text-base" style={{ color: 'color' in agent ? agent.color : '#1E293B' }}>
@@ -279,16 +278,10 @@ export default function LeaderboardPage() {
                         {/* Agent Name */}
                         <div className="col-span-2 flex items-center space-x-2 md:space-x-3">
                           <div className="relative">
-                            <img
-                              src={agent.type === 'user' 
-                                ? (agent.avatar || '/llm-logo/user-default.svg')
-                                : `/llm-logo/${(agent as AIAgent).logo}`
-                              }
-                              alt={agent.name}
-                              className="w-10 h-10 md:w-12 md:h-12 rounded-full"
-                              style={{ 
-                                border: `2px solid #1E293B`
-                              }}
+                            <AgentImage
+                              agent={agent}
+                              size="medium"
+                              borderColor="#1E293B"
                             />
                             <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border border-black animate-pulse"></div>
                           </div>

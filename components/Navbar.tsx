@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { Bot, TrendingUp, Trophy, Store, Menu, X, Brain, Github, Twitter } from 'lucide-react';
+import { Bot, TrendingUp, Trophy, Store, Menu, X, Brain, Github, Twitter, Activity } from 'lucide-react';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -18,19 +18,22 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 glassmorphism border-b border-cyan-500/30 z-50">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14 md:h-16">
+    <nav className="fixed top-0 left-0 right-0 glassmorphism z-50 transition-all duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          
+          {/* Logo Area */}
           <Link 
             href="/"
-            className="text-xl md:text-2xl font-bold bg-gradient-to-r from-[#111E36] to-[#111E36] bg-clip-text text-transparent"
-            style={{ fontFamily: 'var(--font-orbitron)' }}
+            className="flex items-center gap-2 group"
           >
-            Polyx402
+            <span className="text-xl md:text-2xl font-bold text-accent font-display tracking-tight">
+              POLYX402
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex glassmorphism border border-primary/30 rounded-lg p-1 space-x-1">
+          <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
@@ -40,52 +43,52 @@ export default function Navbar() {
                   key={item.href}
                   href={item.href}
                   className={`
-                    flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-300
+                    relative px-4 py-2 rounded-sm flex items-center gap-2 text-sm font-bold font-display tracking-wide transition-all duration-200
                     ${isActive 
-                      ? 'bg-green-500/20 text-green-400 border border-green-500/50 shadow-lg' 
-                      : 'text-gray-300 hover:text-green-400 hover:bg-green-500/10'
+                      ? 'text-accent bg-blue-50 border-b-2 border-primary' 
+                      : 'text-gray-500 hover:text-primary hover:bg-gray-50'
                     }
                   `}
                 >
-                  <Icon size={18} />
-                  <span className="text-sm font-medium">{item.label}</span>
+                  <Icon size={16} className={isActive ? 'text-primary' : 'text-gray-400'} />
+                  {item.label}
                 </Link>
               );
             })}
           </div>
 
-          {/* Right Side: Social Links and Powered By */}
-          <div className="flex items-center space-x-3">
+          {/* Right Side: Social & Branding */}
+          <div className="flex items-center space-x-4">
             {/* Social Links */}
-            <div className="hidden sm:flex items-center space-x-2">
+            <div className="hidden sm:flex items-center space-x-3 border-r border-gray-200 pr-4">
               <Link
-                href="https://github.com/Demerzels-lab/kalsh402-ai-prediction-arena"
+                href="https://github.com/Demerzels-lab/poly-x402-ai-prediction-arena"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-foreground hover:text-primary transition-colors"
+                className="text-gray-400 hover:text-accent transition-colors transform hover:scale-110"
               >
                 <Github size={20} />
               </Link>
               <Link
-                href="https://x.com/kalsh402"
+                href="https://x.com/polyx402"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-foreground hover:text-primary transition-colors"
+                className="text-gray-400 hover:text-accent transition-colors transform hover:scale-110"
               >
                 <Twitter size={20} />
               </Link>
             </div>
 
-            {/* Powered by x402 */}
-            <div className="hidden sm:flex items-center space-x-2 px-3 md:px-4 py-2 rounded-lg bg-purple-500/10 border border-purple-500/30">
-              <span className="text-xs text-purple-400">Powered by</span>
-              <span className="text-sm font-bold text-purple-300">x402</span>
+            {/* Powered by x402 Badge */}
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-sm bg-primary/5 border border-primary/20">
+              <span className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold">Powered by</span>
+              <span className="text-sm font-bold text-primary font-display">x402</span>
             </div>
 
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 rounded-lg text-gray-300 hover:text-cyan-400 hover:bg-cyan-500/10"
+              className="md:hidden p-2 rounded-sm text-accent hover:bg-gray-100 transition-colors"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -94,8 +97,8 @@ export default function Navbar() {
 
         {/* Mobile Navigation Menu */}
         {isMenuOpen && (
-          <div className="md:hidden mt-2 pb-4">
-            <div className="glassmorphism border border-primary/30 rounded-lg p-2 space-y-1">
+          <div className="md:hidden border-t border-gray-100 bg-white/95 backdrop-blur-xl absolute left-0 right-0 shadow-xl animate-fade-in">
+            <div className="p-2 space-y-1">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
@@ -106,37 +109,18 @@ export default function Navbar() {
                     href={item.href}
                     onClick={() => setIsMenuOpen(false)}
                     className={`
-                      flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-300
+                      flex items-center gap-3 px-4 py-3 rounded-sm transition-all duration-200
                       ${isActive 
-                        ? 'bg-green-500/20 text-green-400 border border-green-500/50 shadow-lg' 
-                        : 'text-gray-300 hover:text-green-400 hover:bg-green-500/10'
+                        ? 'bg-blue-50 text-accent border-l-4 border-primary font-bold' 
+                        : 'text-gray-500 hover:bg-gray-50 hover:text-primary'
                       }
                     `}
                   >
                     <Icon size={20} />
-                    <span className="text-base font-medium">{item.label}</span>
+                    <span className="font-display tracking-wide">{item.label}</span>
                   </Link>
                 );
               })}
-              {/* Mobile Social Links */}
-              <div className="flex items-center justify-center space-x-4 pt-2 border-t border-gray-600 mt-2">
-                <Link
-                  href="https://github.com/Demerzels-lab/kalsh402-ai-prediction-arena"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-foreground hover:text-primary transition-colors"
-                >
-                  <Github size={24} />
-                </Link>
-                <Link
-                  href="https://x.com/kalsh402"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-foreground hover:text-primary transition-colors"
-                >
-                  <Twitter size={24} />
-                </Link>
-              </div>
             </div>
           </div>
         )}

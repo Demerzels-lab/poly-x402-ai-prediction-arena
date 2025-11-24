@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import PageHeader from '@/components/PageHeader';
 import Card from '@/components/Card'; // Make sure you created Card.tsx
 import AppLayout from '@/components/AppLayout';
+import AgentImage from '@/components/AgentImage';
 
 // UserAgent type definition
 interface UserAgent {
@@ -187,13 +188,10 @@ export default function DashboardPage() {
                     style={{ borderLeftColor: agent.color, borderColor: `${agent.color}40` }}
                   >
                     <div className="text-center">
-                      <img
-                        src={`/llm-logo/${agent.logo}`}
-                        alt={agent.name}
-                        className="w-12 h-12 md:w-16 md:h-16 rounded-full mx-auto mb-3 md:mb-4 bg-white"
-                        style={{ 
-                          border: `2px solid ${agent.color}`
-                        }}
+                      <AgentImage
+                        agent={agent}
+                        borderColor={agent.color}
+                        className="mb-3 md:mb-4"
                       />
                       <h3 className="font-display font-bold text-base md:text-lg mb-2" style={{ color: agent.color }}>
                         {agent.name}
@@ -256,13 +254,10 @@ export default function DashboardPage() {
                   >
                     <div className="text-center">
                       <div className="relative">
-                        <img
-                          src={agent.avatar || '/llm-logo/user-default.svg'}
-                          alt={agent.name}
-                          className="w-12 h-12 md:w-16 md:h-16 rounded-full mx-auto mb-3 md:mb-4"
-                          style={{ 
-                            border: `2px solid #1E293B`
-                          }}
+                        <AgentImage
+                          agent={agent}
+                          borderColor="#1E293B"
+                          className="mb-3 md:mb-4"
                         />
                         <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-600 rounded-full border-2 border-white animate-pulse"></div>
                       </div>
@@ -417,10 +412,10 @@ export default function DashboardPage() {
                   .map((agent) => (
                     <div key={agent.id} className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <img
-                          src={`/llm-logo/${agent.logo}`}
-                          alt={agent.name}
-                          className={`w-6 h-6 md:w-8 md:h-8 rounded-full ${['chatgpt', 'claude', 'gemini', 'manus', 'grok', 'mistral', 'perplexity'].includes(agent.id) ? 'bg-white' : ''}`}
+                        <AgentImage
+                          agent={agent}
+                          size="tiny"
+                          className={['chatgpt', 'claude', 'gemini', 'manus', 'grok', 'mistral', 'perplexity'].includes(agent.id) ? 'bg-white' : ''}
                         />
                         <span className="font-bold text-sm md:text-base">{agent.name}</span>
                       </div>
