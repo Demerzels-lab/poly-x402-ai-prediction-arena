@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, TrendingUp, DollarSign, Target, Activity, Award, Calendar } from 'lucide-react';
+import { ArrowLeft, TrendingUp, DollarSign, Target, Activity, Award, Calendar, Clock } from 'lucide-react';
 import AppLayout from '@/components/AppLayout';
 import Card from '@/components/Card';
 import { aiAgents, AIAgent } from '@/data/mockData';
@@ -59,8 +59,8 @@ export default function AgentDetailClient({ id }: { id: string }) {
       <AppLayout>
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <Activity className="animate-spin mx-auto mb-4 text-cyan-400" size={48} />
-            <p className="text-gray-400">Loading agent data...</p>
+            <Activity className="animate-spin mx-auto mb-4 text-primary" size={48} />
+            <p className="text-gray-500 font-mono">RETRIEVING AGENT DATA...</p>
           </div>
         </div>
       </AppLayout>
@@ -70,14 +70,14 @@ export default function AgentDetailClient({ id }: { id: string }) {
   if (!agent) {
     return (
       <AppLayout>
-        <div className="text-center py-20">
-          <h2 className="text-2xl font-bold text-red-400 mb-4">Agent Not Found</h2>
-          <p className="text-gray-400 mb-6">The agent you're looking for doesn't exist.</p>
+        <div className="text-center py-20 bg-gray-50 border border-dashed border-gray-300 rounded-sm">
+          <h2 className="text-2xl font-black font-display text-accent mb-4">AGENT NOT FOUND</h2>
+          <p className="text-gray-500 mb-8">The requested agent ID does not exist in the registry.</p>
           <button
             onClick={() => router.push('/dashboard')}
-            className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-lg hover:scale-105 transition-all"
+            className="px-8 py-3 bg-primary text-white font-bold rounded-sm pixel-button hover:shadow-lg transition-all"
           >
-            Back to Dashboard
+            RETURN TO DASHBOARD
           </button>
         </div>
       </AppLayout>
@@ -85,10 +85,12 @@ export default function AgentDetailClient({ id }: { id: string }) {
   }
 
   const isAIAgent = agent.type === 'ai';
-  const agentColor = isAIAgent ? (agent as AIAgent).color : '#ff00ff';
+  const agentColor = isAIAgent ? (agent as AIAgent).color : '#1E293B'; // Default Navy for users
+  
+  // Updated Image Logic with Placeholder
   const agentLogo = isAIAgent 
     ? `/llm-logo/${(agent as AIAgent).logo}` 
-    : (agent as UserAgent).avatar || '/llm-logo/user-default.svg';
+    : (agent as UserAgent).avatar || '/llm-logo/agent-placeholder.png';
 
   // Performance history simulation (last 30 days)
   const performanceHistory = Array.from({ length: 30 }, (_, i) => ({
@@ -103,193 +105,222 @@ export default function AgentDetailClient({ id }: { id: string }) {
         {/* Back Button */}
         <button
           onClick={() => router.push('/dashboard')}
-          className="flex items-center space-x-2 text-cyan-400 hover:text-cyan-300 mb-6 transition-colors"
+          className="flex items-center space-x-2 text-gray-500 hover:text-primary mb-8 transition-colors group"
         >
-          <ArrowLeft size={20} />
-          <span>Back to Dashboard</span>
+          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+          <span className="font-bold text-sm uppercase tracking-wider">Back to Arena</span>
         </button>
 
-        {/* Agent Header */}
-        <Card className="mb-8 p-6 md:p-8">
-          <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
-            <img
-              src={agentLogo}
-              alt={agent.name}
-              className={`w-24 h-24 md:w-32 md:h-32 rounded-full ${isAIAgent ? 'bg-white' : ''}`}
-              style={{ border: `4px solid ${agentColor}` }}
-            />
-            <div className="flex-1 text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start space-x-3 mb-2">
-                <h1 
-                  className="text-3xl md:text-4xl font-bold font-display"
-                  style={{ color: agentColor }}
-                >
-                  {agent.name}
-                </h1>
-                <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                  isAIAgent 
-                    ? 'bg-blue-500/20 text-blue-400' 
-                    : 'bg-magenta-500/20 text-magenta-400'
-                }`}>
-                  {isAIAgent ? 'AI AGENT' : 'USER AGENT'}
+        {/* Agent Header Card */}
+        <Card className="mb-8 p-8 border-t-4" style={{ borderTopColor: agentColor }}>
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
+            <div className="relative">
+              <img
+                src={agentLogo}
+                alt={agent.name}
+                className={`w-32 h-32 rounded-sm bg-white p-1 shadow-lg`}
+                style={{ border: `4px solid ${agentColor}` }}
+              />
+              <div className="absolute -bottom-3 -right-3 bg-white px-3 py-1 rounded-full border border-gray-200 shadow-sm">
+                <span className={`text-xs font-black uppercase tracking-wider ${isAIAgent ? 'text-blue-600' : 'text-purple-600'}`}>
+                  {isAIAgent ? 'SYS.AI' : 'USER.AG'}
                 </span>
               </div>
-              
-              {!isAIAgent && (agent as UserAgent).description && (
-                <p className="text-gray-400 mb-4">{(agent as UserAgent).description}</p>
-              )}
+            </div>
 
-              {!isAIAgent && (
-                <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                  <span className="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-xs font-bold">
-                    {(agent as UserAgent).personality}
+            <div className="flex-1 text-center md:text-left">
+              <div className="mb-4">
+                <h1 className="text-4xl md:text-5xl font-black font-display mb-2 text-accent">
+                  {agent.name}
+                </h1>
+                {!isAIAgent && (agent as UserAgent).description && (
+                  <p className="text-gray-500 text-lg">"{(agent as UserAgent).description}"</p>
+                )}
+              </div>
+
+              {/* Agent Tags */}
+              <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                {!isAIAgent ? (
+                  <>
+                    <span className="px-4 py-1.5 bg-blue-50 text-blue-700 border border-blue-100 rounded-sm text-xs font-bold uppercase tracking-wide flex items-center gap-2">
+                      <Target size={14} />
+                      {(agent as UserAgent).personality}
+                    </span>
+                    <span className="px-4 py-1.5 bg-purple-50 text-purple-700 border border-purple-100 rounded-sm text-xs font-bold uppercase tracking-wide flex items-center gap-2">
+                      <Activity size={14} />
+                      {(agent as UserAgent).baseModel}
+                    </span>
+                    <span className="px-4 py-1.5 bg-gray-100 text-gray-600 border border-gray-200 rounded-sm text-xs font-bold uppercase tracking-wide flex items-center gap-2">
+                      <Calendar size={14} />
+                      Since {new Date((agent as UserAgent).createdAt).toLocaleDateString()}
+                    </span>
+                  </>
+                ) : (
+                  <span className="px-4 py-1.5 bg-green-50 text-green-700 border border-green-100 rounded-sm text-xs font-bold uppercase tracking-wide flex items-center gap-2">
+                    <Award size={14} />
+                    Official System Node
                   </span>
-                  <span className="px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-full text-xs font-bold">
-                    {(agent as UserAgent).baseModel}
-                  </span>
-                  <span className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs font-bold flex items-center space-x-1">
-                    <Calendar size={12} />
-                    <span>Created: {new Date((agent as UserAgent).createdAt).toLocaleDateString()}</span>
-                  </span>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </Card>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="p-6 border-l-4" style={{ borderLeftColor: agentColor }}>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-400 text-sm">Portfolio Value</span>
-              <DollarSign className="text-green-400" size={20} />
+          <Card className="p-6 border-l-4 border-green-500 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-gray-400 text-xs font-bold uppercase tracking-wider">Portfolio Value</span>
+              <DollarSign className="text-green-500 bg-green-50 rounded-sm p-1" size={24} />
             </div>
-            <p className="text-2xl md:text-3xl font-bold text-green-400">
+            <p className="text-3xl font-black font-display text-green-600">
               ${agent.portfolio.toLocaleString()}
             </p>
-            <p className="text-xs text-gray-500 mt-1">Total Assets</p>
+            <p className="text-xs text-gray-400 mt-2 font-mono">TOTAL ASSETS</p>
           </Card>
 
-          <Card className="p-6 border-l-4" style={{ borderLeftColor: agentColor }}>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-400 text-sm">ROI</span>
-              <TrendingUp className="text-cyan-400" size={20} />
+          <Card className="p-6 border-l-4 border-blue-500 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-gray-400 text-xs font-bold uppercase tracking-wider">ROI</span>
+              <TrendingUp className="text-blue-500 bg-blue-50 rounded-sm p-1" size={24} />
             </div>
-            <p className="text-2xl md:text-3xl font-bold text-cyan-400">
+            <p className="text-3xl font-black font-display text-blue-600">
               +{agent.roi.toFixed(1)}%
             </p>
-            <p className="text-xs text-gray-500 mt-1">Return on Investment</p>
+            <p className="text-xs text-gray-400 mt-2 font-mono">ALL TIME RETURN</p>
           </Card>
 
-          <Card className="p-6 border-l-4" style={{ borderLeftColor: agentColor }}>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-400 text-sm">Win Rate</span>
-              <Target className="text-purple-400" size={20} />
+          <Card className="p-6 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-gray-400 text-xs font-bold uppercase tracking-wider">Win Rate</span>
+              <Target className="text-purple-500 bg-purple-50 rounded-sm p-1" size={24} />
             </div>
-            <p className="text-2xl md:text-3xl font-bold text-purple-400">
+            <p className="text-3xl font-black font-display text-purple-600">
               {agent.winRate}%
             </p>
-            <p className="text-xs text-gray-500 mt-1">Successful Predictions</p>
+            <p className="text-xs text-gray-400 mt-2 font-mono">ACCURACY SCORE</p>
           </Card>
 
-          <Card className="p-6 border-l-4" style={{ borderLeftColor: agentColor }}>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-400 text-sm">Total Predictions</span>
-              <Activity className="text-orange-400" size={20} />
+          <Card className="p-6 border-l-4 border-orange-500 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-gray-400 text-xs font-bold uppercase tracking-wider">Activity</span>
+              <Activity className="text-orange-500 bg-orange-50 rounded-sm p-1" size={24} />
             </div>
-            <p className="text-2xl md:text-3xl font-bold text-orange-400">
+            <p className="text-3xl font-black font-display text-orange-500">
               {agent.totalPredictions}
             </p>
-            <p className="text-xs text-gray-500 mt-1">All Time</p>
+            <p className="text-xs text-gray-400 mt-2 font-mono">TOTAL TRADES</p>
           </Card>
         </div>
 
         {/* Performance Chart */}
-        <Card className="mb-8 p-6">
-          <h2 className="text-xl md:text-2xl font-bold text-cyan-400 mb-6 font-display">
-            PERFORMANCE HISTORY (30 DAYS)
-          </h2>
-          <div className="relative h-64">
-            <svg className="w-full h-full" viewBox="0 0 800 250">
-              {/* Grid lines */}
-              {[0, 1, 2, 3, 4].map(i => (
-                <line
-                  key={i}
-                  x1="50"
-                  y1={50 + i * 50}
-                  x2="780"
-                  y2={50 + i * 50}
-                  stroke="#333"
-                  strokeWidth="1"
-                  strokeDasharray="5,5"
-                />
-              ))}
-
-              {/* Performance line */}
-              <polyline
-                points={performanceHistory
-                  .map((p, i) => {
-                    const x = 50 + (i / 29) * 730;
-                    const normalizedROI = ((p.roi - (agent.roi - 20)) / 40) * 200;
-                    const y = 250 - normalizedROI - 50;
-                    return `${x},${y}`;
-                  })
-                  .join(' ')}
-                stroke={agentColor}
-                strokeWidth="3"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-
-              {/* Axis labels */}
-              <text x="25" y="60" fill="#888" fontSize="12">High</text>
-              <text x="25" y="150" fill="#888" fontSize="12">Mid</text>
-              <text x="25" y="240" fill="#888" fontSize="12">Low</text>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+          <div className="lg:col-span-2">
+            <Card className="p-6 h-full">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-xl font-bold font-display text-accent">PERFORMANCE HISTORY</h2>
+                <span className="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded-sm">30 DAYS</span>
+              </div>
               
-              <text x="50" y="240" fill="#888" fontSize="12">Day 1</text>
-              <text x="400" y="240" fill="#888" fontSize="12" textAnchor="middle">Day 15</text>
-              <text x="750" y="240" fill="#888" fontSize="12" textAnchor="end">Day 30</text>
-            </svg>
-          </div>
-        </Card>
+              <div className="relative h-64 w-full">
+                <svg className="w-full h-full overflow-visible" viewBox="0 0 800 250">
+                  {/* Grid lines */}
+                  {[0, 1, 2, 3, 4].map(i => (
+                    <line
+                      key={i}
+                      x1="0" y1={50 + i * 50}
+                      x2="800" y2={50 + i * 50}
+                      stroke="#e5e7eb" strokeWidth="1"
+                    />
+                  ))}
 
-        {/* Recent Activity */}
-        <Card className="p-6">
-          <h2 className="text-xl md:text-2xl font-bold text-cyan-400 mb-6 font-display">
-            RECENT ACTIVITY
-          </h2>
-          <div className="space-y-4">
-            {[1, 2, 3, 4, 5].map((_, index) => {
-              const predictions = [
-                { title: 'Bitcoin ATH $150K+ Q4 2025', result: 'WIN', confidence: 85 },
-                { title: 'Tesla Stock $500+ per share', result: 'LOSS', confidence: 72 },
-                { title: 'Apple $4T Market Cap', result: 'WIN', confidence: 78 },
-                { title: 'ETH $5K before August', result: 'PENDING', confidence: 68 },
-                { title: 'NVIDIA Stock Split 2025', result: 'WIN', confidence: 91 }
-              ];
-              const pred = predictions[index];
-              
-              return (
-                <div key={index} className="flex items-center justify-between p-4 bg-black/30 rounded-lg border border-gray-700">
-                  <div className="flex-1">
-                    <p className="font-bold text-white mb-1">{pred.title}</p>
-                    <p className="text-xs text-gray-400">
-                      Confidence: {pred.confidence}% • {Math.floor(Math.random() * 24) + 1}h ago
-                    </p>
-                  </div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                    pred.result === 'WIN' ? 'bg-green-500/20 text-green-400' :
-                    pred.result === 'LOSS' ? 'bg-red-500/20 text-red-400' :
-                    'bg-yellow-500/20 text-yellow-400'
-                  }`}>
-                    {pred.result}
-                  </span>
+                  {/* Area Fill */}
+                  <path
+                    d={`M 0 250 L ${performanceHistory.map((p, i) => {
+                        const x = (i / 29) * 800;
+                        const normalizedROI = ((p.roi - (agent.roi - 20)) / 40) * 200;
+                        const y = 250 - normalizedROI - 50;
+                        return `${x},${y}`;
+                      }).join(' ')} L 800 250 Z`}
+                    fill={`${agentColor}10`} // 10% opacity fill
+                  />
+
+                  {/* Line Graph */}
+                  <polyline
+                    points={performanceHistory
+                      .map((p, i) => {
+                        const x = (i / 29) * 800;
+                        const normalizedROI = ((p.roi - (agent.roi - 20)) / 40) * 200;
+                        const y = 250 - normalizedROI - 50;
+                        return `${x},${y}`;
+                      })
+                      .join(' ')}
+                    stroke={agentColor}
+                    strokeWidth="3"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                
+                {/* X-Axis Labels */}
+                <div className="flex justify-between mt-2 text-xs text-gray-400 font-mono">
+                  <span>Day 1</span>
+                  <span>Day 15</span>
+                  <span>Day 30</span>
                 </div>
-              );
-            })}
+              </div>
+            </Card>
           </div>
-        </Card>
+
+          {/* Recent Activity List */}
+          <div className="lg:col-span-1">
+            <Card className="p-0 h-full overflow-hidden">
+              <div className="p-6 border-b border-gray-100 bg-gray-50">
+                <h2 className="text-xl font-bold font-display text-accent">RECENT TRADES</h2>
+              </div>
+              <div className="divide-y divide-gray-100">
+                {[1, 2, 3, 4, 5].map((_, index) => {
+                  const predictions = [
+                    { title: 'Bitcoin ATH $150K+', result: 'WIN', confidence: 85, profit: '+$124.50' },
+                    { title: 'Tesla > $500', result: 'LOSS', confidence: 72, profit: '-$50.00' },
+                    { title: 'Apple Market Cap', result: 'WIN', confidence: 78, profit: '+$89.20' },
+                    { title: 'ETH 2.0 Upgrade', result: 'PENDING', confidence: 68, profit: '---' },
+                    { title: 'NVIDIA Earnings', result: 'WIN', confidence: 91, profit: '+$210.00' }
+                  ];
+                  const pred = predictions[index];
+                  
+                  return (
+                    <div key={index} className="p-4 hover:bg-blue-50/30 transition-colors group">
+                      <div className="flex justify-between items-start mb-1">
+                        <span className="font-bold text-gray-800 text-sm">{pred.title}</span>
+                        <span className={`text-xs font-bold px-2 py-0.5 rounded-sm ${
+                          pred.result === 'WIN' ? 'bg-green-100 text-green-700' :
+                          pred.result === 'LOSS' ? 'bg-red-100 text-red-700' :
+                          'bg-yellow-100 text-yellow-700'
+                        }`}>
+                          {pred.result}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center text-xs text-gray-500">
+                        <div className="flex items-center gap-1">
+                          <Clock size={12} />
+                          <span>{Math.floor(Math.random() * 12) + 1}h ago</span>
+                        </div>
+                        <span className={`font-mono font-bold ${
+                          pred.result === 'WIN' ? 'text-green-600' : 
+                          pred.result === 'LOSS' ? 'text-red-500' : 'text-gray-400'
+                        }`}>
+                          {pred.profit}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </Card>
+          </div>
+        </div>
       </div>
     </AppLayout>
   );

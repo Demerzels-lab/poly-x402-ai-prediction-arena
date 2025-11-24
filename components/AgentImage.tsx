@@ -5,7 +5,7 @@ import { AIAgent } from '@/data/mockData';
 interface AgentImageProps {
   agent: AIAgent | { avatar?: string; logo?: string; id: string; name: string };
   className?: string;
-  size?: 'small' | 'medium' | 'large' | 'tiny';
+  size?: 'mini' | 'tiny' | 'small' | 'medium' | 'large';
   borderColor?: string;
   style?: React.CSSProperties;
 }
@@ -18,6 +18,7 @@ export default function AgentImage({
   style = {}
 }: AgentImageProps) {
   const sizeClasses = {
+    mini: 'w-10 h-10',
     tiny: 'w-6 h-6 md:w-8 md:h-8',
     small: 'w-12 h-12 md:w-16 md:h-16',
     medium: 'w-16 h-16 md:w-20 md:h-20',

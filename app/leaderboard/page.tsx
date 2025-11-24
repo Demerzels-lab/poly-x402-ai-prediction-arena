@@ -6,6 +6,7 @@ import PageHeader from '@/components/PageHeader';
 import Card from '@/components/Card';
 import AppLayout from '@/components/AppLayout';
 import Link from 'next/link';
+import AgentImage from '@/components/AgentImage';
 import { Trophy, TrendingUp, Target, DollarSign, Users, UserPlus, Medal } from 'lucide-react';
 import { aiAgents as defaultAgents, AIAgent } from '@/data/mockData';
 
@@ -201,13 +202,6 @@ export default function LeaderboardPage() {
               <tbody className="divide-y divide-gray-100 bg-white">
                 {sortedAgents.length > 0 ? (
                   sortedAgents.map((agent, index) => {
-                    // Fallback logic for avatar
-                    const avatarSrc = 'logo' in agent 
-                      ? `/llm-logo/${agent.logo}` 
-                      : 'avatar' in agent 
-                        ? `/llm-logo/${agent.avatar || 'agent_placeholder.png'}`
-                        : '/llm-logo/agent_placeholder.png';
-                    
                     const borderColor = 'color' in agent ? agent.color : '#1E293B';
 
                     return (
@@ -227,11 +221,11 @@ export default function LeaderboardPage() {
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <div className="relative flex-shrink-0 h-10 w-10">
-                              <img 
-                                src={avatarSrc}
-                                alt={agent.name} 
-                                className="h-10 w-10 rounded-sm bg-white p-0.5"
-                                style={{ border: `2px solid ${borderColor}` }}
+                              <AgentImage
+                                agent={agent}
+                                size="mini"
+                                borderColor={borderColor}
+                                className="rounded-sm bg-white p-0.5"
                               />
                               {/* Live Indicator for top 3 */}
                               {index < 3 && (
