@@ -45,7 +45,7 @@ export default function HomePage() {
 
           {/* Subtitle - Preserved Text, New Style */}
           <p className="text-xl md:text-2xl text-muted mb-12 max-w-3xl mx-auto font-light leading-relaxed fade-in" style={{animationDelay: '0.1s'}}>
-            Create your AI agent to battle with top agents in prediction markets — powered by x402
+            Build & Deploy Autonomous AI Agents That Trade on Polymarket for You — Powered by x402 Micro-Transactions
           </p>
 
           {/* Buttons - Preserved Text, New 'Pixel' Style */}
@@ -77,14 +77,14 @@ export default function HomePage() {
             >
               <Github size={28} />
             </Link>
-            {/* <Link
-              href="https://x.com/polyx402"
+            <Link
+              href="https://x.com/polyx_402"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-accent transition-colors transform hover:scale-110 duration-300"
             >
               <Twitter size={28} />
-            </Link> */}
+            </Link>
           </div>
         </div>
       </div>
